@@ -1,0 +1,155 @@
+.header{
+  $black: #212121;
+  margin: 0 auto !important;
+  max-width: 1280px;
+  &__main{
+    padding: 1.25rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .iShop{
+      text-decoration: none;
+      color: $black;
+      &__title{
+
+      }
+      &__type{
+
+      }
+    }
+    .phone{
+      text-decoration: none;
+      color: $black;
+    }
+    .actionBlock{
+
+      &__action{
+
+      }
+    }
+    .contacts{
+      text-decoration: none;
+      color: $black;
+    }
+    .personalAccount{
+      text-decoration: none;
+      color: $black;
+      text-align: center;
+      cursor: pointer;
+      &__title{
+        text-decoration: none;
+        color: $black;
+        padding: 0.5rem;
+      }
+      .panel{
+        background: #808080;
+        position: absolute;
+        width: 13rem;
+        &__item{
+          padding: 0.5rem;
+          display: block;
+          background: #FFFFFF;
+          text-decoration: none;
+          color: $black;
+          &_lk{
+
+          }
+          &_basket{
+
+          }
+        }
+      }
+    }
+  }
+  &__fixed{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .catalog{
+      cursor: pointer;
+      display: flex;
+      &__img{
+        align-self: center;
+        background: url("./imgs/menu.svg") center no-repeat;
+        background-size: cover;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      &__description{
+        margin-left: 0.25rem;
+      }
+    }
+    .search{
+      display: flex;
+      &__input{
+        border-radius: 7px 0 0 7px;
+        border: 0.3px solid $black;
+        border-right: 0;
+        bottom: 0;
+        min-height: 2rem;
+        max-height: 2rem;
+        min-width: 28rem;
+        max-width: 28rem;
+        resize:none;
+        font-size: 16px;
+        padding: 0.3rem 0.5rem;
+        &::placeholder{
+          font-size: 16px;
+        }
+      }
+      &__btn{
+        border: 0.3px solid $black;
+        border-radius: 0px 7px 7px 0px;
+        border-left: 0;
+        background-color: #c4c4c4;
+        padding: 0.15rem 0.5rem;
+      }
+    }
+    .compare{
+      display: flex;
+      &__img{
+        align-self: center;
+        background: url("./imgs/compare.svg") center no-repeat;
+        margin-top: 0.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+      &__description{
+        margin-left: 0.25rem;
+      }
+    }
+    .favourites{
+      display: flex;
+      &__img{
+        align-self: center;
+        background: url("./imgs/heart.svg") center no-repeat;
+        margin-top: 0.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+      &__description{
+        margin-left: 0.25rem;
+      }
+    }
+  }
+  .showedCatalog{
+    overflow: hidden;
+    width: 100%;
+    top: 8rem;
+    bottom: 0;
+    margin-left: -3rem;
+    position: absolute;
+    background: #FFFFFF;
+    z-index: 55;
+    &__link{
+      text-decoration: none;
+      color:$black
+    }
+    &__item{
+      margin: 1.25rem 3rem;
+      &:first-child{
+        margin-top: 2rem;
+      }
+    }
+  }
+}

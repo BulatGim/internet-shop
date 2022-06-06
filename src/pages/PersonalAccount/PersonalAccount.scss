@@ -1,0 +1,67 @@
+.PersonalAccount{
+  $black: #212121;
+  max-width: 1280px;
+  margin: 3rem auto 0 auto;
+  .PAMenu{
+    display: flex;
+    &__item{
+      padding: 0.25rem 0.75rem;
+      border: 0.5px solid $black;
+      &_active{
+        border-bottom: none;
+      }
+    }
+  }
+  &__item{
+    margin-top: 1.25rem;
+    display: none;
+    &_active{
+      display: block;
+    }
+  }
+  .PersonalData{
+    &__title{
+
+    }
+    &__form{
+
+    }
+    .avatar{
+      margin-top: 1.25rem;
+      display: flex;
+      &__title{
+
+      }
+      &__preview{
+
+      }
+      &__label{
+        margin-left: 1.25rem;
+        cursor: pointer;
+      }
+      &__input{
+        display: none;
+      }
+    }
+    .namePatronymic{
+      max-width: 25rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .phoneBirthday{
+      max-width: 25rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sendBtn{
+      margin-top: 1.25rem;
+      padding: 0.25rem 1.25rem;
+    }
+  }
+  .reviews{
+    .yoursReviews{
+      margin-top: 2rem;
+      display: flex;
+    }
+  }
+}

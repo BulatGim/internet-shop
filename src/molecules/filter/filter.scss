@@ -1,0 +1,42 @@
+.filter{
+  &:first-child{
+    margin-top: 0;
+  }
+  margin-top: 1rem;
+  .filterHeader{
+    cursor: pointer;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5px solid #212121;
+    display: flex;
+    align-items: center;
+    &__title{
+      font-size: 20px;
+      margin-right: 0.25rem;
+    }
+    &__showHide{
+      margin-top: 0.35rem;
+      &_inactive{
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__items{
+    .filterOption{
+      margin-top: 0.25rem;
+      &__input{
+        margin-right: 0.25rem;
+      }
+      &__title{
+
+      }
+    }
+  }
+  &__link{
+    font-size: 20px;
+    display: block;
+    margin-top: 1rem;
+    text-decoration: none;
+    color:#212121;
+  }
+}

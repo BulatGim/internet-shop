@@ -1,0 +1,29 @@
+.App{
+  $black: #212121;
+  *, ::after, ::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  h1{
+    font-size: 48px;
+    font-weight: 400;
+  }
+  h2{
+    font-size: 32px;
+    font-weight: 400;
+  }
+  h3{
+    font-size: 24px;
+    font-weight: 400;
+  }
+  p{
+    font-size: 20px;
+  font-weight: 400;
+  }
+  &__overflowHidden{
+    body{
+      overflow: hidden;
+    }
+  }
+}

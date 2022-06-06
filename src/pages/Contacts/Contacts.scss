@@ -1,0 +1,53 @@
+.Contacts{
+  max-width: 1280px;
+  margin: 3rem auto 0 auto;
+  &__title{
+
+  }
+  &__main{
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__text{
+    max-width: 50%;
+    .text__alert{
+      margin-top: 1.25rem;
+    }
+    .contactMe{
+      margin-top: 3rem;
+      &__title{
+      }
+      &__mail{
+        margin-top: 1.25rem;
+      }
+      &__telegram{
+        display: flex;
+        margin-top: 1.25rem;
+      }
+      &__text{
+        margin-right: 0.75rem;
+
+      }
+      &__git{
+        display: flex;
+        margin-top: 1.25rem;
+      }
+    }
+  }
+  .askQuestion{
+    &__title{
+
+    }
+    &__aboutUser{
+      display: flex;
+      justify-content: space-between;
+    }
+    &__send{
+      margin-top: 1rem;
+      padding: 0.4rem 1.25rem;
+      border-radius: 10px;
+      border: none;
+    }
+  }
+}

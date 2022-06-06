@@ -1,0 +1,39 @@
+.content{
+  display: flex;
+  justify-content: space-between;
+  .devices{
+    width: 50rem;
+  }
+  &__menu{
+    position: sticky;
+    top: 0;
+    height: 160px;
+    .arrange{
+      min-width: 20rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: none;
+    }
+    .summary{
+      border-radius: 10px;
+      background: #E0E0E0;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      &__item{
+        margin-top: 0.25rem;
+        display: flex;
+        justify-content: space-between;
+        &_main{
+
+        }
+        &_amount{
+          font-size: 16px;
+          margin-top: 0.5rem;
+        }
+        &_promotion{
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}

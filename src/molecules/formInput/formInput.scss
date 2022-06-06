@@ -1,0 +1,29 @@
+.formInput{
+  margin-top: 1.25rem;
+  position: relative;
+  &__placeholder{
+    transition: all 0.1s ease-in-out;
+    transform: translateY(-0.5rem);
+    padding: 0 0.25rem;
+    background: #FFFFFF;
+    margin-left: 1rem;
+    position: absolute;
+    font-size: 12px;
+    pointer-events: none;
+    &_big{
+      transform: translateY(0.5rem);
+      font-size: 20px;
+      margin-left: 0.5rem;
+    }
+  }
+  &__input{
+    border-width: 1px;
+    overflow: auto;
+    font-family: "Inter";
+    padding: 0.6rem 0.7rem;
+    border-radius: 5px;
+    font-size: 20px;
+    height: 2.8rem;
+    resize: none;
+  }
+}

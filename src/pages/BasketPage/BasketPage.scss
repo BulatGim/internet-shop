@@ -1,0 +1,18 @@
+.BasketPage{
+  max-width: 1280px;
+  margin: 3rem auto 0 auto;
+  &__title{
+
+  }
+  .destroyBasket{
+    margin-top: 0.75rem;
+    display: flex;
+    &__img{
+      margin-right: 0.25rem;
+    }
+    &__title{
+
+    }
+  }
+
+}

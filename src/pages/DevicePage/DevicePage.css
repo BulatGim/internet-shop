@@ -1,0 +1,136 @@
+.DevicePage {
+  max-width: 1280px;
+  margin: 0 auto; }
+  .DevicePage__title {
+    margin-top: 3rem; }
+  .DevicePage__main {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    .DevicePage__main .leftBlock {
+      max-width: 760px; }
+      .DevicePage__main .leftBlock .preview {
+        height: 650px;
+        width: 760px;
+        background: url("./imgs/pepe.svg") center no-repeat;
+        background-size: cover; }
+      .DevicePage__main .leftBlock .characteristics {
+        margin-top: 3rem; }
+        .DevicePage__main .leftBlock .characteristics__title {
+          margin-bottom: 2rem; }
+        .DevicePage__main .leftBlock .characteristics .parameter {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: justify;
+              -ms-flex-pack: justify;
+                  justify-content: space-between;
+          border-bottom: 1px solid #212121;
+          margin-bottom: 1.8rem; }
+        .DevicePage__main .leftBlock .characteristics .parameter:last-child {
+          margin-bottom: 0; }
+    .DevicePage__main .rightBlock {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 20%;
+      max-height: 420px; }
+      .DevicePage__main .rightBlock .colorChoose__title {
+        font-weight: 400; }
+      .DevicePage__main .rightBlock .colorChoose .color {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-top: 0.5rem; }
+        .DevicePage__main .rightBlock .colorChoose .color__item {
+          border-radius: 50px;
+          width: 2rem;
+          height: 2rem;
+          margin-left: 0.875rem; }
+          .DevicePage__main .rightBlock .colorChoose .color__item_active {
+            border: 2px solid #212121; }
+        .DevicePage__main .rightBlock .colorChoose .color__item:first-child {
+          margin-left: 0; }
+      .DevicePage__main .rightBlock .option {
+        margin-top: 1.5rem; }
+        .DevicePage__main .rightBlock .option__title {
+          font-weight: 400; }
+        .DevicePage__main .rightBlock .option .optionChoose {
+          margin-top: 0.5rem;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex; }
+          .DevicePage__main .rightBlock .option .optionChoose__item {
+            border: 0.5px solid #212121;
+            border-radius: 10px;
+            padding: 0.375rem 1rem;
+            margin-right: 0.5rem; }
+          .DevicePage__main .rightBlock .option .optionChoose__item:last-child {
+            margin-right: 0; }
+          .DevicePage__main .rightBlock .option .optionChoose__text {
+            font-size: 20px; }
+      .DevicePage__main .rightBlock .reviews {
+        text-decoration: none;
+        color: #212121;
+        margin-top: 1.5rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center; }
+        .DevicePage__main .rightBlock .reviews__star {
+          display: block;
+          background: url("./imgs/star.svg") center no-repeat;
+          background-size: cover;
+          width: 1.5rem;
+          height: 1.5rem;
+          margin-right: 0.675rem; }
+        .DevicePage__main .rightBlock .reviews__averageRating {
+          font-weight: 400;
+          margin-right: 1.25rem; }
+        .DevicePage__main .rightBlock .reviews__ratingsNumber {
+          font-weight: 400; }
+      .DevicePage__main .rightBlock .price {
+        margin-top: 1.5rem; }
+        .DevicePage__main .rightBlock .price__oldPrice {
+          text-decoration: line-through;
+          font-weight: 400; }
+        .DevicePage__main .rightBlock .price__newPrice {
+          font-weight: 400; }
+      .DevicePage__main .rightBlock .actions {
+        margin-top: 2rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center; }
+        .DevicePage__main .rightBlock .actions__main {
+          cursor: pointer;
+          border: none;
+          padding: 0.5rem 1.5rem;
+          border-radius: 10px; }
+        .DevicePage__main .rightBlock .actions__secondary {
+          cursor: pointer;
+          margin-left: 0.625rem;
+          border-radius: 10px;
+          border: none;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          padding: 0.95rem 1.5rem; }
+          .DevicePage__main .rightBlock .actions__secondary .secondarybtnImg {
+            width: 23px;
+            height: 23px; }
+  .DevicePage .description {
+    margin-top: 3rem; }
+    .DevicePage .description__content {
+      margin-top: 2.5rem; }
+
+/*
+style={{background: `url(${device.img}) center no-repeat`}}*/
+
+/*# sourceMappingURL=DevicePage.css.map */

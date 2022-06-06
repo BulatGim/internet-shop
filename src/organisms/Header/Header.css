@@ -1,0 +1,140 @@
+.header {
+  margin: 0 auto !important;
+  max-width: 1280px; }
+  .header__main {
+    padding: 1.25rem 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .header__main .iShop {
+      text-decoration: none;
+      color: #212121; }
+    .header__main .phone {
+      text-decoration: none;
+      color: #212121; }
+    .header__main .contacts {
+      text-decoration: none;
+      color: #212121; }
+    .header__main .personalAccount {
+      text-decoration: none;
+      color: #212121;
+      text-align: center;
+      cursor: pointer; }
+      .header__main .personalAccount__title {
+        text-decoration: none;
+        color: #212121;
+        padding: 0.5rem; }
+      .header__main .personalAccount .panel {
+        background: #808080;
+        position: absolute;
+        width: 13rem; }
+        .header__main .personalAccount .panel__item {
+          padding: 0.5rem;
+          display: block;
+          background: #FFFFFF;
+          text-decoration: none;
+          color: #212121; }
+  .header__fixed {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .header__fixed .catalog {
+      cursor: pointer;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+      .header__fixed .catalog__img {
+        -ms-flex-item-align: center;
+            align-self: center;
+        background: url("./imgs/menu.svg") center no-repeat;
+        background-size: cover;
+        width: 1.5rem;
+        height: 1.5rem; }
+      .header__fixed .catalog__description {
+        margin-left: 0.25rem; }
+    .header__fixed .search {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+      .header__fixed .search__input {
+        border-radius: 7px 0 0 7px;
+        border: 0.3px solid #212121;
+        border-right: 0;
+        bottom: 0;
+        min-height: 2rem;
+        max-height: 2rem;
+        min-width: 28rem;
+        max-width: 28rem;
+        resize: none;
+        font-size: 16px;
+        padding: 0.3rem 0.5rem; }
+        .header__fixed .search__input::-webkit-input-placeholder {
+          font-size: 16px; }
+        .header__fixed .search__input:-ms-input-placeholder {
+          font-size: 16px; }
+        .header__fixed .search__input::-ms-input-placeholder {
+          font-size: 16px; }
+        .header__fixed .search__input::placeholder {
+          font-size: 16px; }
+      .header__fixed .search__btn {
+        border: 0.3px solid #212121;
+        border-radius: 0px 7px 7px 0px;
+        border-left: 0;
+        background-color: #c4c4c4;
+        padding: 0.15rem 0.5rem; }
+    .header__fixed .compare {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+      .header__fixed .compare__img {
+        -ms-flex-item-align: center;
+            align-self: center;
+        background: url("./imgs/compare.svg") center no-repeat;
+        margin-top: 0.25rem;
+        width: 1.25rem;
+        height: 1.25rem; }
+      .header__fixed .compare__description {
+        margin-left: 0.25rem; }
+    .header__fixed .favourites {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+      .header__fixed .favourites__img {
+        -ms-flex-item-align: center;
+            align-self: center;
+        background: url("./imgs/heart.svg") center no-repeat;
+        margin-top: 0.25rem;
+        width: 1.25rem;
+        height: 1.25rem; }
+      .header__fixed .favourites__description {
+        margin-left: 0.25rem; }
+  .header .showedCatalog {
+    overflow: hidden;
+    width: 100%;
+    top: 8rem;
+    bottom: 0;
+    margin-left: -3rem;
+    position: absolute;
+    background: #FFFFFF;
+    z-index: 55; }
+    .header .showedCatalog__link {
+      text-decoration: none;
+      color: #212121; }
+    .header .showedCatalog__item {
+      margin: 1.25rem 3rem; }
+      .header .showedCatalog__item:first-child {
+        margin-top: 2rem; }
+
+/*# sourceMappingURL=Header.css.map */

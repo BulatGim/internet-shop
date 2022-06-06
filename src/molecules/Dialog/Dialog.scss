@@ -1,0 +1,37 @@
+.dialog{
+  display: flex;
+  width: 100%;
+  margin-top: 2.25rem;
+  &__addresseePreview{
+
+  }
+  &__main{
+    padding: 0.5rem 1.125rem 1rem 1.125rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    .upperBlock{
+      justify-self: center;
+      display: flex;
+      justify-content: space-between;
+      &__title{
+
+      }
+      &__addresseeName{
+
+      }
+    }
+    .lowerBlock{
+      display: flex;
+      justify-content: space-between;
+      &__lastMessage{
+
+      }
+      &__date{
+        justify-self: end;
+
+      }
+    }
+  }
+}

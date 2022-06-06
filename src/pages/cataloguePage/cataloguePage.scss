@@ -1,0 +1,19 @@
+.cataloguePage{
+  max-width: 1280px;
+  margin: 3rem auto 0 auto;
+  display: flex;
+
+  &__filters{
+    position: sticky;
+    top: 2rem;
+    height: 25rem;
+    padding: 0.5rem 1.5rem;
+    box-shadow: -4px -4px 20px rgba(236, 236, 236, 0.25), 3px 3px 10px rgba(0, 0, 0, 0.15);
+  }
+  &__devices{
+    margin-left: 2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-row-gap: 2.25rem;
+  }
+}

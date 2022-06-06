@@ -1,0 +1,34 @@
+.reviews{
+  $grey: #808080;
+  margin-top: 2.5rem;
+  .header{
+    display: flex;
+    &__title{
+
+    }
+    &__amount{
+      color: $grey;
+      margin-left: 0.5rem;
+      margin-top: 0.5rem;
+      align-self: center;
+    }
+  }
+  .stars{
+    margin-top: 1rem;
+    display: flex;
+    &__item{
+      background: url("./imgs/star.svg") center no-repeat;
+      background-size: contain;
+      margin-left: 0.25rem;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    &__item:first-child{
+      margin-left: 0;
+    }
+  }
+  .reviews__container{
+    margin-top: 2rem;
+    display: flex;
+  }
+}
