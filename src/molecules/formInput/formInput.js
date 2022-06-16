@@ -39,7 +39,7 @@ export default function FormInput(props) {
             <span
                 className={props.value ? ("formInput__placeholder") : ("formInput__placeholder formInput__placeholder_big")}>{props.placeholder}</span>
             {props.input ? (
-                <input className="formInput__input" type={props.inputType}
+                <input className={messageError? ("formInput__input_error formInput__input"):("formInput__input")} type={props.inputType}
                        style={{width: props.width + "rem", height: props.height + "rem"}}
                        value={props.value}
                        onChange={(e) => {props.setter(e.target.value); if (props.validation){props.validation(e)}}}
@@ -47,7 +47,7 @@ export default function FormInput(props) {
                        name={props.name}
                        required={props.required ? (true) : (false)}/>
             ) : (
-                <textarea className="formInput__input"
+                <textarea className={messageError? ("formInput__input_error formInput__input"):("formInput__input")}
                           style={{width: props.width + "rem", height: props.height + "rem"}}
                           value={props.value}
                           onChange={(e) => {props.setter(e.target.value); }}
@@ -55,7 +55,7 @@ export default function FormInput(props) {
                           name={props.name} maxLength={props.maxLength}
                           required={props.required ? (true) : (false)}></textarea>
             )}
-            {messageError}
+            <p className="formInput__error">{messageError}</p>
         </div>
     )
 }

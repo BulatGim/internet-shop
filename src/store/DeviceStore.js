@@ -17,7 +17,7 @@ export default class DeviceStore {
         this._devices = devices;
     }
     get types(){
-        return this._Types;
+        return this._types;
     }
     get brands(){
         return this._brands;

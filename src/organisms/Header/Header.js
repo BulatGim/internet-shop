@@ -8,7 +8,6 @@ import {Context} from "../../index";
 
 const Header = observer( (props)=>{
     const {user} = useContext(Context)
-    console.log(user)
     const [isPanelActive, setIsPanelActive] = useState(false);
     const [isCatalogActive, setIsCatalogActive] = useState(false);
     let [isAuth, setIsAuth] = useState();
@@ -58,12 +57,15 @@ const Header = observer( (props)=>{
                 <NavLink to={"/Contacts"} className="contacts" href="#"><p>Контакты</p></NavLink>
                 {isAuth?(
                     <div className="personalAccount">
-                        <p className="personalAccount__title" data-show-panel="show">Здравствуйте, username</p>
+                        <p className="personalAccount__title" data-show-panel="show">Здравствуйте, {user._user.name}</p>
                         {isPanelActive?(
                             <div className="panel">
                                 <NavLink to={"/lk"} className="panel__item panel__item_lk" href="#"><p>Личный кабинет</p> </NavLink>
                                 <NavLink to={"/basket"} className="panel__item panel__item__basket" href="#"><p>Корзина</p> </NavLink>
-                                <NavLink to={"/login"} onClick={()=>user.setIsAuth(false)} className="panel__item panel__item__logOut" href="#"><p>Выйти</p> </NavLink>
+                                <NavLink to={"/login"} onClick={()=> {
+                                    user.setIsAuth(false);
+                                    user.setUser("")
+                                }} className="panel__item panel__item__logOut" href="#"><p>Выйти</p> </NavLink>
                             </div>
                         ):("")}
                     </div>

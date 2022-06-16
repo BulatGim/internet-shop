@@ -2,13 +2,10 @@ import {useEffect, useState} from 'react';
 import "./Slider.scss";
 import arrow from './img/arrow.svg'
 function Slider(props){
-  let img = [
-    <img key={props.slides[0]} src={props.slides[0]} />,
-    <img key={props.slides[1]} src={props.slides[1]} />,
-    <img key={props.slides[2]} src={props.slides[2]} />,
-    <img key={props.slides[3]} src={props.slides[3]} />,
-    <img key={props.slides[4]} src={props.slides[4]} />
-  ]
+  let img = [];
+  for (let i = 0; i< props.slides.length; i++){
+      img.push(<img className="sliderImg" key={props.slides[i]} src={props.slides[i]}/>)
+  }
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [x3, setX3] = useState(null);
@@ -38,9 +35,11 @@ useEffect(() => {
     // Запускаем интервал
     const interval = setInterval(() => {
         doNextSlide();
-    }, 500000)
+    }, 100000)
     // Выключаем интервал
-    return () => clearInterval()
+    return () => {
+        clearInterval(interval)
+    }
 }, [])
 // Вычисляем индекс предыдущего слайда
 const prevImgIndex = activeIndex ? activeIndex - 1 : img.length - 1

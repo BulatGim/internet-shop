@@ -5,7 +5,7 @@ const $host = axios.create({
 })
 
 const $authHost = axios.create({
-
+    baseURL: process.env.REACT_APP_STATIC_URL
 })
 
 const authInterceptor = config => {

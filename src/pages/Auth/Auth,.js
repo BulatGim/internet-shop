@@ -1,13 +1,15 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import FormInput from "../../molecules/formInput/formInput";
 import "./Auth.scss"
 import {registration, login} from "../../http/userAPI";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
+import {SHOP_ROUTE} from "../../utils/consts";
 
 const Auth = observer( ()=>{
     const {user} = useContext(Context)
+    let navigate = useNavigate();
 
     const [auth, setAuth] = useState("registration")
 
@@ -64,32 +66,27 @@ const Auth = observer( ()=>{
     async function send() {
         try {
             let data;
-            emailValidation();
-            nameValidation();
-            dateValidation();
             if (userError.length < 1) {
                 if (auth === "registration") {
-
-                    /*const phoneForSend = phone;
-                    if (phoneForSend === "+7(___)___-__-__"){
-                        setPhone("")
-                    }*/
+                    emailValidation();
+                    nameValidation();
+                    dateValidation();
                     data = await registration(name, surname, patronymic, /*phone,*/ birthday, email, password)
-                    user.setUser(user);
-                    user.setIsAuth(true)
-                    console.log(user)
-                } else if (auth === "login") {
-                    data = await login( email, password)
                     user.setUser(data);
                     user.setIsAuth(true)
-                    console.log(data)
+                    navigate("/")
+                } else if (auth === "login") {
+                    data = await login(email, password)
+                    user.setUser(data);
+                    user.setIsAuth(true)
+                    navigate(SHOP_ROUTE)
                 } else {
                     console.log("error")
                 }
 
             }
         }catch (e) {
-            return /*e.response.data.message*/ console.log(e)
+            return /*e.response.data.message*/ alert(e.response.data.message)
         }
     }
 
@@ -191,7 +188,10 @@ const Auth = observer( ()=>{
                         <FormInput placeholder="Повторите пароль" errors={userError} name={"repeatPassword"} input={true} inputType={"password"} value={repeatPassword} setter={setRepeatPassword} width={27.5} />
                     </form>
                     <button className="popUp__send" type="submit" onClick={send}><p>Отправить</p></button>
-                    <p className="registration__toLogin">Уже есть аккаунт? <span to="/login" onClick={()=>setAuth("login")}>Войти</span></p>
+                    <p className="registration__toLogin">Уже есть аккаунт? <span to="/login" onClick={()=> {
+                        setAuth("login");
+                        setUserError("")
+                    }}>Войти</span></p>
                 </div>
             ):(
                 <div className="login popUp">
@@ -201,7 +201,10 @@ const Auth = observer( ()=>{
                         <FormInput value={password} inputType={"password"} setter={setPassword} name={"password"} reqired={true} input={true} placeholder="Пароль" width={27.5}/>
                     </form>
                     <button className="popUp__send" type="submit" onClick={send}><p>Отправить</p></button>
-                    <p className="login__text">Еще нет аккаунта?<span onClick={()=>setAuth("registration")}>Зарегистрироваться</span></p>
+                    <p className="login__text">Еще нет аккаунта?<span onClick={()=> {
+                        setAuth("registration")
+                        setUserError("")
+                    }}>Зарегистрироваться</span></p>
 
                 </div>
             )}

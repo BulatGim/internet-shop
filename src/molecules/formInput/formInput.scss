@@ -25,5 +25,12 @@
     font-size: 20px;
     height: 2.8rem;
     resize: none;
+    &_error{
+      background-color: red;
+    }
+  }
+  &__error{
+    font-size: 13px;
+    color: red;
   }
 }
