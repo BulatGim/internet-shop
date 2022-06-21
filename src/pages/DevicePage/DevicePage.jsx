@@ -1,5 +1,5 @@
 import Reviews from "../../organisms/Reviews/Reviews";
-import {Link} from "react-router-dom"
+import {Link, useParams} from "react-router-dom"
 
 import "./DevicePage.scss"
 
@@ -7,8 +7,10 @@ import pepe from "./imgs/pepe.svg"
 import compareImg from "./imgs/compare.svg";
 import favouriteImg from "./imgs/favourite.svg"
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import DeviceBlock from "../../organisms/deviceBlock/deviceBlock";
+import Scroll from "react-scroll"
+import axios from "axios";
 
 const DevicePage = () => {
     const deviceOptions = [{
@@ -19,7 +21,7 @@ const DevicePage = () => {
         option: "256GB",
     }
     ]
-    const parameters = [{
+    /*const parameters = [{
         title: "Размер",
         description: "50X120",
     }, {
@@ -38,8 +40,8 @@ const DevicePage = () => {
         title: "Размер",
         description: "50X120",
     },
-    ];
-    const reviews = [{
+    ];*/
+    /*const reviews = [{
         userName: "username1",
         date: "28.06.2020",
         rateNumber: "4,6",
@@ -85,8 +87,8 @@ const DevicePage = () => {
         },
         ]
     },
-    ];
-    const device = {
+    ];*/
+    /*const device = {
         title: "Смартфон Apple Iphone 12 pro",
         img: pepe,
         colors:["#11CD23", "#1151CD", "#DE1B00", "#CC00DE", "#E8DF0B"],
@@ -98,7 +100,7 @@ const DevicePage = () => {
             oldPrice: 54999,
             newPrice: 45999
         }
-    };
+    };*/
     const deviceBlock = {
         title: "Похожие товары",
         devices: [{
@@ -137,13 +139,44 @@ const DevicePage = () => {
         },
         ]
     }
+    const [reviews, setReviews] = useState()
+    const [device, setDevice] = useState()
+    const [devices, setDevices] = useState()
+
+    console.log(reviews)
+
+    const [reviewsInOneDevice, setReviewsInOneDevice] = useState()
+
+    const params = useParams();
+
+    let scroll = Scroll.animateScroll;
+
+    const toTop = ()=>scroll.scrollToTop()
+
+    const fetchData = async (setter, address) => {
+        const result = await axios(
+            process.env.REACT_APP_API_URL+address,
+        );
+        setter(result.data)
+    };
+    useEffect(  () => {
+        fetchData(setReviews, "rating/devices/"+params.id);
+        fetchData(setDevice, "device/"+params.id);
+        fetchData(setDevices, "device");
+        toTop();
+    }, [params])
+    console.log(reviewsInOneDevice);
     return (
         <div className="DevicePage">
-            <h1 className="DevicePage__title">{device.title}</h1>
+            <h1 className="DevicePage__title">{device? device.name: ""}</h1>
             <div className="DevicePage__main">
                 <div className="leftBlock">
-                    <div className="preview" ></div>
-                    <div className="characteristics">
+                    <div className="preview">
+                        {device?(
+                            <img className="preview__img" src={process.env.REACT_APP_STATIC_URL+""+device.img} alt=""/>
+                        ):("")}
+                    </div>
+                    {/*<div className="characteristics">
                         <h2 className="characteristics__title">Характеристики</h2>
                         {parameters.map((item) =>
                             <div className="parameter">
@@ -151,15 +184,15 @@ const DevicePage = () => {
                                 <p className="parameter__description">{item.description}</p>
                             </div>
                         )}
-                    </div>
+                    </div>*/}
                 </div>
                 <div className="rightBlock">
                     <div className="colorChoose">
                         <h3 className="colorChoose__title">Выберите цвет</h3>
                         <div className="color">
-                            {device.colors.map(color=>
-                                <div className="color__item" style={{background: color}} ></div>
-                            )}
+                            {device?(device.device_colors?device.device_colors.map(item=>
+                                <div className="color__item" style={{background: "#"+item.color}} ></div>
+                            ):("Нет доступных цветов")):("")}
                         </div>
                     </div>
                     <div className="option">
@@ -173,12 +206,14 @@ const DevicePage = () => {
                     </div>
                     <Link to={"#reviews"} className="reviews">
                         <span className="reviews__star"></span>
-                        <h3 className="reviews__averageRating">{device.reviews.averageRating}</h3>
-                        <h3 className="reviews__ratingsNumber">{device.reviews.ratingsNumber} отзывов</h3>
+                        <h3 className="reviews__averageRating">{device?device.rating:""}</h3>
+                        <h3 className="reviews__ratingsNumber">{device?device.ratingsNumber:""} отзывов</h3>
                     </Link>
                     <div className="price">
-                        <h3 className="price__oldPrice">{device.price.oldPrice}</h3>
-                        <h2 className="price__newPrice">{device.price.newPrice}.-</h2>
+                        <h3 className={device&&device.newPrice!==0?("price__oldPrice_lineThrough price__oldPrice"):("price__oldPrice")}>{device?device.price:""}</h3>
+                        {device&&device.newPrice!==0? (
+                            <h2 className="price__newPrice">{device?device.newPrice:""}.-</h2>
+                        ):("")}
                     </div>
                     <div className="actions">
                         <button className="actions__main"><h2>В корзину</h2></button>
@@ -196,8 +231,8 @@ const DevicePage = () => {
                     ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem
                     ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum</h3>
             </div>
-            <Reviews reviews={reviews} generalRate={device.reviews}/>
-            <DeviceBlock deviceBlock={deviceBlock}/>
+            <Reviews reviews={reviews} generalRate={device?device.rating:""} device={device}/>
+            <DeviceBlock deviceBlock={devices?devices.rows:[]} title={"Похожие товары"} />
         </div>
     )
 }

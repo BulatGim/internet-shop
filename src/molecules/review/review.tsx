@@ -72,9 +72,6 @@ const Review: FC<IReviewProps> = ({review})=>{
             <ReviewItem title={"Преимущества"} text={review.advantages}/>
             <ReviewItem title={"Недостатки"} text={review.disadvantages}/>
             <ReviewItem title={"Комментарий"} text={review.comment}/>
-            {/*{props.review.reviewItem.map((item, index)=>
-
-            )}*/}
         </div>
     )
 }

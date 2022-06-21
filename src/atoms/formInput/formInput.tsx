@@ -1,12 +1,29 @@
 import "./formInput.scss"
-import React, {useEffect, useState} from "react";
+import {FC, useEffect, useState, ChangeEvent, KeyboardEvent} from "react";
+import {IError} from "../../types/types";
 
-export default function FormInput(props) {
+interface IFromInputProps {
+    errors: IError[];
+    name: string;
+    value: string | number;
+    placeholder: string;
+    input: boolean;
+    width: number;
+    height: number;
+    inputType: string;
+    required: boolean;
+    setter: (e:ChangeEvent<HTMLTextAreaElement>|ChangeEvent<HTMLInputElement>)=> void;
+    validation?: (e:KeyboardEvent<HTMLTextAreaElement>|ChangeEvent<HTMLInputElement>)=>void;
+    maxLength?: number;
+}
+
+const FormInput:FC<IFromInputProps> = (props) => {
     const [messageError, setMessageError] = useState("")
 
     useEffect(()=>{
         showError();
     }, [props])
+
     function showError() {
         if(!messageError){
             if (!props.errors){
@@ -21,15 +38,16 @@ export default function FormInput(props) {
             })
         }else{
             let arr = props.errors;
-            let isError = true;
+            let noError = true;
             arr.map((item)=>{
                 if (item.formInput === props.name){
-                    return isError = false;
+                    return noError = false;
+                }else{
+                    return
                 }
             })
-            if (isError === true){
+            if (noError === true){
                 return setMessageError("");
-
             }
         }
 
@@ -41,16 +59,16 @@ export default function FormInput(props) {
             {props.input ? (
                 <input className={messageError? ("formInput__input_error formInput__input"):("formInput__input")} type={props.inputType}
                        style={{width: props.width + "rem", height: props.height + "rem"}}
-                       value={props.value}
-                       onChange={(e) => {props.setter(e.target.value); if (props.validation){props.validation(e)}}}
-                       /*onKeyDown={(e)=>props.validation?props.validation(e):""}*/
                        name={props.name}
+                       value={props.value}
+                       onChange={(e) => {props.setter(e); if (props.validation){props.validation(e)}}}
+                       /*onKeyDown={(e)=>props.validation?props.validation(e):""}*/
                        required={props.required ? (true) : (false)}/>
             ) : (
                 <textarea className={messageError? ("formInput__input_error formInput__input"):("formInput__input")}
                           style={{width: props.width + "rem", height: props.height + "rem"}}
                           value={props.value}
-                          onChange={(e) => {props.setter(e.target.value); }}
+                          onChange={(e) => {props.setter(e); }}
                           onKeyDown={(e)=>props.validation?props.validation(e):""}
                           name={props.name} maxLength={props.maxLength}
                           required={props.required ? (true) : (false)}></textarea>
@@ -59,3 +77,4 @@ export default function FormInput(props) {
         </div>
     )
 }
+export default FormInput;

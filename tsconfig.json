@@ -27,6 +27,7 @@
 {
   "compilerOptions": {
     /*"jsx": "react",*/
+    "allowJs": true,
     "jsx": "react-jsx",
     "lib": ["es6", "dom"],
     "rootDir": "src",

@@ -1,12 +1,13 @@
 .device{
+  cursor: pointer;
   $grey: #808080;
   max-width: 14rem;
   margin-right: 2rem;
-  &:nth-child(4){
-    margin-right: 0;
-  }
   &__preview{
     width: 100%;
+    max-width: 225px;
+    max-height: 100px;
+    object-fit: cover;
   }
   &__name{
     margin-top: 1rem;

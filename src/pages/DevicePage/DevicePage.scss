@@ -11,10 +11,11 @@
     .leftBlock{
       max-width: 760px;
       .preview{
-        height: 650px;
-        width: 760px;
-        background: url("./imgs/pepe.svg") center no-repeat;
-        background-size: cover;
+        &__img{
+          height: 650px;
+          width: 760px;
+          object-fit: cover;
+        }
       }
       .characteristics{
         margin-top: 3rem;
@@ -110,8 +111,10 @@
       .price{
         margin-top: 1.5rem;
         &__oldPrice{
-          text-decoration: line-through;
           font-weight: 400;
+          &_lineThrough{
+            text-decoration: line-through;
+          }
         }
         &__newPrice{
           font-weight: 400;

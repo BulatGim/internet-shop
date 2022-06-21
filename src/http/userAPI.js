@@ -19,3 +19,8 @@ export const check = async ()=>{
     localStorage.setItem("token", data.token)
     return jwtDecode(data.token)
 }
+
+export const sendNewReview = async (rate, deviceId, advantages, disadvantages, comment)=>{
+    const {data} = await $authHost.post('api/rating', {rate, deviceId, advantages, disadvantages, comment})
+    return data;
+}

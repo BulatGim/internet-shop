@@ -26,7 +26,7 @@
     height: 2.8rem;
     resize: none;
     &_error{
-      background-color: red;
+      border: 1px solid red;
     }
   }
   &__error{

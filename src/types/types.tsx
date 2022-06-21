@@ -8,24 +8,30 @@ export interface IRate {
 }
 
 export interface IReview {
-    id: Number;
-    rate: String;
-    advantages: String;
-    disadvantages: String;
-    comment: String;
-    createdAt: String;
-    deviceId: Number;
-    devicePrevieew: String;
-    deviceTitle: String;
-    userId: Number;
-    userName: String;
+    id: number;
+    rate: string;
+    advantages: string;
+    disadvantages: string;
+    comment: string;
+    createdAt: string;
+    deviceId: number;
+    devicePrevieew: string;
+    deviceTitle: string;
+    userId: number;
+    userName: string;
 }
 
 export interface IDeviceCard {
-    img: String;
-    name: String;
-    rating: String;
-    ratingsNumber: String;
-    newPrice: String;
-    price: String;
+    id: number;
+    img: string;
+    name: string;
+    rating: string;
+    ratingsNumber: string;
+    newPrice: number;
+    price: string;
+}
+
+export interface IError {
+    formInput: string;
+    error: string
 }

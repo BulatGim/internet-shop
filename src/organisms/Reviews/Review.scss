@@ -31,4 +31,31 @@
     margin-top: 2rem;
     display: flex;
   }
+  &-noItems{
+    height: 270px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &__text{
+    }
+  }
+  &-actions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &__leave{
+      cursor: pointer;
+      border-radius: 10px;
+      background-color: #006b95;
+      color: #FFF;
+      margin-top: 2rem;
+      border: none;
+      padding: 0.5rem 1.5rem;
+    }
+    &__link{
+      text-decoration: none;
+      color: #000;
+    }
+  }
 }

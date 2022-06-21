@@ -1,7 +1,7 @@
 import telegramImg from "./imgs/telegram.svg";
 import gitImg from "./imgs/git.svg"
 import "./Contacts.scss";
-import FormInput from "../../molecules/formInput/formInput";
+import FormInput from "../../atoms/formInput/formInput";
 
 export default function Contacts() {
     return(

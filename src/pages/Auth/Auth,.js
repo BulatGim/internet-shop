@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import FormInput from "../../molecules/formInput/formInput";
+import FormInput from "../../atoms/formInput/formInput";
 import "./Auth.scss"
 import {registration, login} from "../../http/userAPI";
 import {observer} from "mobx-react-lite";
@@ -13,20 +13,29 @@ const Auth = observer( ()=>{
 
     const [auth, setAuth] = useState("registration")
 
-    const [surname, setSurname] = useState("");
-    const [patronymic, setPatronymic] = useState("");
-    const [name, setName] = useState("");
-    const [birthday, setBirthday] = useState("");
-    const [phone, setPhone] = useState("+7(___)___-__-__");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [repeatPassword, setRepeatPassword] = useState("")
+    const [values, setValues] = useState({phone: "+7(___)___-__-__"});
 
     const [userError, setUserError] = useState([])
-
+    console.log(userError)
 
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
+
+
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setValues({
+            ...values,
+            [name]: value
+        })
+    }
+
+    function handleBigChange(value, inputName) {
+        setValues({
+            ...values,
+            [inputName]: value
+        })
+    }
 
 
     function hideUserError(formInput) {
@@ -60,31 +69,50 @@ const Auth = observer( ()=>{
     }
 
     useEffect(()=>{
-        repeatPassword!==password?showUserError("repeatPassword", "Пароли должны совпадать"):hideUserError("repeatPassword");
-    },[repeatPassword])
+        values.repeatPassword!==values.password?showUserError("repeatPassword", "Пароли должны совпадать"):hideUserError("repeatPassword");
+    },[values.repeatPassword])
+
+    /*function needSomeValidation(inputName, errorMsg){
+        values.inputName?hideUserError(""+inputName):showUserError(""+inputName, errorMsg)
+        console.log(values.inputName)
+    }*/
+    function passwordValidation(){
+        values.password?hideUserError("password"):showUserError("password", "Пароль не может быть пустым")
+    }
+    function repeatPasswordValidation(){
+        values.repeatPassword?hideUserError("repeatPassword"):showUserError("repeatPassword", "Пожалуйста, повторите пароль")
+    }
+    function nameValidation(){
+        values.name?hideUserError("name"):showUserError("name", "Имя не может быть пустым")
+    }
+    console.log(values)
 
     async function send() {
+        emailValidation();
+        passwordValidation();
         try {
             let data;
-            if (userError.length < 1) {
                 if (auth === "registration") {
-                    emailValidation();
+                    repeatPasswordValidation();
                     nameValidation();
                     dateValidation();
-                    data = await registration(name, surname, patronymic, /*phone,*/ birthday, email, password)
-                    user.setUser(data);
-                    user.setIsAuth(true)
-                    navigate("/")
+                    if (userError.length<1){
+                        data = await registration(values.name, values.surname, values.patronymic, /*phone,*/ values.birthday, values.email, values.password)
+                        user.setUser(data);
+                        user.setIsAuth(true)
+                        navigate("/")
+                    }
                 } else if (auth === "login") {
-                    data = await login(email, password)
-                    user.setUser(data);
-                    user.setIsAuth(true)
-                    navigate(SHOP_ROUTE)
+
+                    if (userError.length<1){
+                        data = await login(values.email, values.password)
+                        user.setUser(data);
+                        user.setIsAuth(true)
+                        navigate(SHOP_ROUTE)
+                    }
                 } else {
                     console.log("error")
                 }
-
-            }
         }catch (e) {
             return /*e.response.data.message*/ alert(e.response.data.message)
         }
@@ -94,47 +122,52 @@ const Auth = observer( ()=>{
         console.log(e.keyCode)
         if(e.keyCode === 8 || e.keyCode === 46){
             e.preventDefault()
-            let arr = birthday.split("");
+            let arr = values.birthday.split("");
             arr.pop()
             let str = arr.join("")
-            setBirthday(str)
+            handleBigChange(str, "birthday")
         }else if((e.keyCode < 47 || e.keyCode > 57) && (e.keyCode<96 || e.keyCode>106)){
             return e.preventDefault()
         }else{
-            let arr = birthday.split("");
+            let arr = values.birthday.split("");
             if (arr.length === 5 || arr.length === 2){
-                setBirthday(birthday+"/");
+                handleBigChange(values.birthday+"/", "birthday");
             }
         }
     }
+
     function dateValidation(){
         let year = new Date().getFullYear()
-        let arr = birthday.split("/")
-        if(arr[0]>31 || arr[1]>12 || arr[2]>year || arr[2]<1900){
-            if (arr[0]>31){
-                arr[0] = 31;
-                showUserError("birthday", "Введите корректную дату")
+        if (values.birthday){
+            let arr = values.birthday.split("/")
+            if(arr[0]>32 || arr[1]>13 || arr[2]>year+1 || arr[2]<1900-1){
+                if (arr[0]>32){
+                    arr[0] = 31;
+                    showUserError("birthday", "Введите корректную дату")
+                }
+                if(arr[1]>13){
+                    arr[1] = 12;
+                    showUserError("birthday", "Введите корректную дату");
+                }
+                if (arr[2]>year+1 || arr[2]<1900-1){
+                    arr[2] = 2000;
+                    showUserError("birthday", "Введите корректную дату")
+                }
+                arr[0] += "/";
+                arr[1] += "/";
+                let str = arr.join("");
+                handleBigChange(str, "birthday")
+            }else{
+                hideUserError("birthday")
             }
-            if(arr[1]>12){
-                arr[1] = 12;
-                showUserError("birthday", "Введите корректную дату");
-            }
-            if (arr[2]>year || arr[2]<1900){
-                arr[2] = 2000;
-                showUserError("birthday", "Введите корректную дату")
-            }
-            arr[0] += "/";
-            arr[1] += "/";
-            let str = arr.join("");
-            setBirthday(str);
         }else{
-            hideUserError("birthday")
+            return
         }
     }
     function phoneInputMask(e) {
         if (e.keyCode === 8 || e.keyCode === 46){
             e.preventDefault()
-            let arr = phone.split("").reverse();
+            let arr = values.phone.split("").reverse();
             let abc = Boolean;
             for (let i = 0; i<arr.length-2; i++){
                 const regex = /[0-9]/;
@@ -142,68 +175,66 @@ const Auth = observer( ()=>{
                 if (abc===true){
                     arr.splice(i,1,"_")
                     let str = arr.reverse().join("")
-                    return setPhone(str)
+                    return handleBigChange(str, "phone")
                 }
             }
         }else if((e.keyCode < 47 || e.keyCode > 57) && (e.keyCode<96 || e.keyCode>106)){
             return e.preventDefault()
         }else{
             e.preventDefault()
-            let arr = phone.split("")
+            let arr = values.phone.split("")
             const index = arr.findIndex((item)=> item==="_")
             arr[index] = e.key
             const str = arr.join("")
-            setPhone(str)
+            handleBigChange(str, "phone")
         }
     }
     function emailValidation () {
         const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        return (email === '')
+        return (values.email === '')
             ? showUserError("email", "Email не может быть пустым")
             : hideUserError("email")
-            || (!regex.test(String(email).toLowerCase()))
+            || (!regex.test(String(values.email).toLowerCase()))
                 ? showUserError("email", "Некорректный email")
                 : hideUserError("email")
     }
-    function nameValidation(){
-        return (name ==='')?showUserError("name", "Имя не может быть пустым"):hideUserError('name')
-    }
+
     return(
         <div className="Auth">
             {auth==="registration"?(
                 <div className="registration popUp">
                     <h2 className="registration__title">Регистрация</h2>
                     <form action="">
-                        <FormInput placeholder="Фамилия" errors={userError} name={"surname"} value={surname} setter={setSurname} width={27.5}/>
+                        <FormInput placeholder="Фамилия" errors={userError} name={"surname"} value={values.surname || ""} setter={handleChange} width={27.5}/>
                         <div className="registration__name">
-                            <FormInput placeholder="Имя" errors={userError} name={"name"} value={name} setter={setName} width={14} required={true}/>
-                            <FormInput placeholder="Отчество" errors={userError} name={"patronymic"} value={patronymic} setter={setPatronymic} width={12}/>
+                            <FormInput placeholder="Имя" errors={userError} name={"name"} value={values.name || ""} setter={handleChange} width={14} required={true}/>
+                            <FormInput placeholder="Отчество" errors={userError} name={"patronymic"} value={values.patronymic || ""} setter={handleChange} width={12}/>
                         </div>
                         <div className="registration__phoneDate">
-                            <FormInput placeholder="Телефон" errors={userError} name={"phone"} validation={phoneInputMask} value={phone} setter={setPhone} width={16}/>
-                            <FormInput placeholder="Дата рождения" errors={userError} name={"birthday"} validation={dateInputMask} maxLength={"10"} width={10} value={birthday} setter={setBirthday}/>
+                            <FormInput placeholder="Телефон" errors={userError} name={"phone"} validation={phoneInputMask} value={values.phone || ""} setter={handleChange} width={16}/>
+                            <FormInput placeholder="Дата рождения" errors={userError} name={"birthday"} validation={dateInputMask} maxLength={"10"} width={10} value={values.birthday || ""} setter={handleChange}/>
                         </div>
-                        <FormInput placeholder="E-mail" errors={userError} name={"email"} value={email} setter={setEmail} width={27.5} required={true}/>
-                        <FormInput placeholder="Пароль" errors={userError} name={"password"} input={true} inputType={"password"} value={password} setter={setPassword} width={27.5} required={true}/>
-                        <FormInput placeholder="Повторите пароль" errors={userError} name={"repeatPassword"} input={true} inputType={"password"} value={repeatPassword} setter={setRepeatPassword} width={27.5} />
+                        <FormInput placeholder="E-mail" errors={userError} name={"email"} value={values.email || ""} setter={handleChange} width={27.5} required={true}/>
+                        <FormInput placeholder="Пароль" errors={userError} name={"password"} input={true} inputType={"password"} value={values.password || ""} setter={handleChange} width={27.5} required={true}/>
+                        <FormInput placeholder="Повторите пароль" errors={userError} name={"repeatPassword"} input={true} inputType={"password"} value={values.repeatPassword || ""} setter={handleChange} width={27.5} />
                     </form>
                     <button className="popUp__send" type="submit" onClick={send}><p>Отправить</p></button>
                     <p className="registration__toLogin">Уже есть аккаунт? <span to="/login" onClick={()=> {
                         setAuth("login");
-                        setUserError("")
+                        setUserError([])
                     }}>Войти</span></p>
                 </div>
             ):(
                 <div className="login popUp">
                     <h2 className="login__title">Войти</h2>
                     <form action="">
-                        <FormInput value={email} setter={setEmail} name={"email"} errors={userError} required={true} placeholder="E-mail" width={27.5}/>
-                        <FormInput value={password} inputType={"password"} setter={setPassword} name={"password"} reqired={true} input={true} placeholder="Пароль" width={27.5}/>
+                        <FormInput value={values.email|| ""} setter={handleChange} name={"email"} errors={userError} required={true} placeholder="E-mail" width={27.5}/>
+                        <FormInput placeholder="Пароль" errors={userError} name={"password"} input={true} inputType={"password"} value={values.password || ""} setter={handleChange} width={27.5} required={true}/>
                     </form>
                     <button className="popUp__send" type="submit" onClick={send}><p>Отправить</p></button>
                     <p className="login__text">Еще нет аккаунта?<span onClick={()=> {
                         setAuth("registration")
-                        setUserError("")
+                        setUserError([])
                     }}>Зарегистрироваться</span></p>
 
                 </div>

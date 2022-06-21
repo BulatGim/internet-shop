@@ -1,6 +1,6 @@
 import "./PersonalAccount.scss"
 import avatarImg from "./imgs/avatar.svg"
-import FormInput from "../../molecules/formInput/formInput";
+import FormInput from "../../atoms/formInput/formInput";
 import {useState} from "react";
 import Review from "../../molecules/review/review";
 import devicePreview from "../BasketPage/imgs/devicePreview.svg";
