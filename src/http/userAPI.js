@@ -24,3 +24,13 @@ export const sendNewReview = async (rate, deviceId, advantages, disadvantages, c
     const {data} = await $authHost.post('api/rating', {rate, deviceId, advantages, disadvantages, comment})
     return data;
 }
+
+export const addToBasket = async (deviceId)=>{
+    const {data} = await $authHost.post('api/basket', {deviceId})
+    return data;
+}
+
+export const getBasketDevices = async ()=>{
+    const basket = await $authHost.get('api/basket')
+    return basket.data.array;
+}

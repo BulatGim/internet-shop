@@ -24,14 +24,13 @@ interface IReviewsProps {
 const Reviews: FC<IReviewsProps> = observer(({reviews, generalRate, device})=>{
     const [isNewReviewActive, setIsNewReviewActive] = useState<boolean>(false)
     let user = useContext<any>(Context)
-    console.log(user.user)
     return(
         <div className="reviews" id="reviews">
             {generalRate ? (
                 <div>
                     <div className="header">
                         <h2 className="header__title">Отзывы</h2>
-                        <p className="header__amount">{reviews.length}</p>
+                        <p className="header__amount">{reviews&&reviews.length}</p>
                     </div>
                     <div className="stars">
                         <div className="stars__item"></div>

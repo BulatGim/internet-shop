@@ -41,6 +41,9 @@ const Review: FC<IReviewProps> = ({review})=>{
         }
     }
     const determineDates = (date:String)=>{
+        if (!date){
+            return
+        }
         let arr = [];
         const day = date.split('T')[0].split('-')[2];
         arr.push(day)

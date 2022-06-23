@@ -1,7 +1,6 @@
 .SliderSomeItems {
   margin-top: 50px;
   position: relative;
-  height: 300px;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -34,37 +33,40 @@
     }
   }
   &__img {
-    margin-left: 20%;
-    position: absolute;
     width: 100%;
     transition: all 0.2s;
+    margin-bottom: 2rem;
     .slider__imgNew{
     }
   }
   &__img-prev {
+    /*margin-left: 6%;*/
     transform: translateX(-20%);
   }
   &__img-prevDouble{
+    /*position: absolute;*/
     transform: translateX(-120%);
   }
 
   &__img-current{
-    margin-left: 36%;
   }
 
   &__img-next {
-    margin-left: 51.5%;
+    /*margin-right: 6%;*/
     transform: translateX(20%);
   }
   &__img-nextDouble{
+    /*position: absolute;*/
     transform: translateX(120%);
   }
   &-crumbs{
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
     position: absolute;
     display: flex;
     align-items: center;
     bottom: 0;
-    left: 46%;
     &__item{
       margin-right: 10px;
       display: block;

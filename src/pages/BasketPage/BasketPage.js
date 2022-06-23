@@ -1,57 +1,59 @@
-import React from "react";
+import React, {useContext, useEffect, useState} from "react";
 import closeImg from "./imgs/close.svg"
 import devicePreview from "./imgs/devicePreview.svg"
 import BasketCard from "../../molecules/BasketCard/BasketCard";
 import "./BasketPage.scss"
 import OrderMenu from "../../molecules/orderMenu/orderMenu";
+import {Context} from "../../index";
 
 const BasketPage = ()=>{
-    const basket ={
-        basketAmount: 10,
-        basketDevices:[{
-            img: devicePreview,
-            title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-            price: {
-                oldPrice: 15600,
-                newPrice: 9600
-            },
-            amount: 10,
-            amountInBasket: 1
-        },{
-            img: devicePreview,
-            title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-            price: {
-                oldPrice: 15600,
-                newPrice: 9600
-            },
-            amount: 10,
-            amountInBasket: 1
-        },{
-            img: devicePreview,
-            title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-            price: {
-                oldPrice: 15600,
-                newPrice: 9600
-            },
-            amount: 10,
-            amountInBasket: 1
-        },
-        ]
+    let basket = useContext(Context).basket._userBasket
+    /*const [values, setValues] = useState({});
+    function handleChange(name, value){
+        setValues({
+            ...values,
+            [name]: Number(value)
+        })
     }
+*/
+    const [sum, setSum] = useState(0)
+    const [totalSum, setTotalSum] = useState(0)
+    const [promotionSum, setPromotionSum] = useState(0)
+    const [goodsNum, setGoodsNum] = useState(0)
+
+    function calculateAll() {
+        setGoodsNum(basket.length)
+        let sum = 0
+        let promotionSum = 0;
+        let totalSum = 0
+        for (let i=0; i<basket.length; i++){
+            sum += basket[i].price
+            promotionSum += basket[i].newPrice===0?(0):(basket[i].price- basket[i].newPrice);
+            console.log(sum, promotionSum)
+        }
+        totalSum = sum-promotionSum
+        setSum(sum)
+        setPromotionSum(promotionSum)
+        setTotalSum(totalSum)
+    }
+    useEffect(()=>{
+        calculateAll()
+    }, [])
+
     return(
         <div className="BasketPage">
             <h2 className="BasketPage__title">Корзина</h2>
             <div className="destroyBasket">
                 <img src={closeImg} alt="" className="destroyBasket__img"/>
-                <p className="destroyBasket__title">Убрать все ({basket.basketAmount})</p>
+                <p className="destroyBasket__title">Убрать все ({basket.length})</p>
             </div>
             <div className="content">
                 <div className="devices">
-                    {basket.basketDevices.map(device=>
-                        <BasketCard device={device} from="basket"/>
+                    {basket.map(device=>
+                        <BasketCard key={device.id} device={device} from="basket"/>
                     )}
                 </div>
-                <OrderMenu text="Оформить заказ"/>
+                <OrderMenu text="Оформить заказ" promotionSum={promotionSum} sum={sum} totalSum={totalSum} goodsNum={goodsNum}/>
             </div>
         </div>
     )

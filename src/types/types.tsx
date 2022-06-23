@@ -1,12 +1,4 @@
 
-/*export interface IReviews {
-
-}*/
-
-export interface IRate {
-    
-}
-
 export interface IReview {
     id: number;
     rate: string;
@@ -25,13 +17,26 @@ export interface IDeviceCard {
     id: number;
     img: string;
     name: string;
-    rating: string;
-    ratingsNumber: string;
+    rating: number;
+    ratingsNumber: number;
     newPrice: number;
-    price: string;
+    price: number;
+    amount: number;
+    brandId:number;
+    typeId:number;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface IError {
     formInput: string;
     error: string
+}
+
+export interface IBasket {
+    id: number;
+    createdAt: string;
+    updatedAt: string;
+    basketId: number;
+    deviceId: number;
 }

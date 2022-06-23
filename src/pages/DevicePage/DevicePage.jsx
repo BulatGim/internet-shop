@@ -2,17 +2,19 @@ import Reviews from "../../organisms/Reviews/Reviews";
 import {Link, useParams} from "react-router-dom"
 
 import "./DevicePage.scss"
-
-import pepe from "./imgs/pepe.svg"
 import compareImg from "./imgs/compare.svg";
 import favouriteImg from "./imgs/favourite.svg"
 
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import DeviceBlock from "../../organisms/deviceBlock/deviceBlock";
 import Scroll from "react-scroll"
 import axios from "axios";
+import {addToBasket} from "../../http/userAPI";
+
+import {Context} from "../../index";
 
 const DevicePage = () => {
+    const user= useContext(Context);
     const deviceOptions = [{
         option: "64GB",
     }, {
@@ -21,129 +23,9 @@ const DevicePage = () => {
         option: "256GB",
     }
     ]
-    /*const parameters = [{
-        title: "Размер",
-        description: "50X120",
-    }, {
-        title: "Размер",
-        description: "50X120",
-    }, {
-        title: "Размер",
-        description: "50X120",
-    }, {
-        title: "Размер",
-        description: "50X120",
-    }, {
-        title: "Размер",
-        description: "50X120",
-    }, {
-        title: "Размер",
-        description: "50X120",
-    },
-    ];*/
-    /*const reviews = [{
-        userName: "username1",
-        date: "28.06.2020",
-        rateNumber: "4,6",
-        reviewItem: [{
-            title: "Plus",
-            text: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ",
-        }, {
-            title: "Minus",
-            text: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ",
-        }, {
-            title: "Comment",
-            text: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ",
-        },
-        ]
-    },{
-        userName: "username1",
-        date: "28.06.2020",
-        rateNumber: "4,6",
-        reviewItem: [{
-            title: "Plus",
-            text: "there is some plus",
-        }, {
-            title: "Minus",
-            text: "there is some minus",
-        }, {
-            title: "Comment",
-            text: "there is some comment",
-        },
-        ]
-    },{
-        userName: "username1",
-        date: "28.06.2020",
-        rateNumber: "4,6",
-        reviewItem: [{
-            title: "Plus",
-            text: "there is some plus",
-        }, {
-            title: "Minus",
-            text: "there is some minus",
-        }, {
-            title: "Comment",
-            text: "there is some comment",
-        },
-        ]
-    },
-    ];*/
-    /*const device = {
-        title: "Смартфон Apple Iphone 12 pro",
-        img: pepe,
-        colors:["#11CD23", "#1151CD", "#DE1B00", "#CC00DE", "#E8DF0B"],
-        reviews:{
-            averageRating: "4,5",
-            ratingsNumber: "5"
-        },
-        price:{
-            oldPrice: 54999,
-            newPrice: 45999
-        }
-    };*/
-    const deviceBlock = {
-        title: "Похожие товары",
-        devices: [{
-            preview: pepe,
-            title: "Телефон №1 с объемом памяти 16",
-            reviews: {
-                averageRating: "4,5",
-                ratingsNumber: "5"
-            },
-            price:{
-                oldPrice: 54999,
-                newPrice: 45999,
-            }
-        },{
-            preview: pepe,
-            title: "Телефон №1 с объемом памяти 16",
-            reviews: {
-                averageRating: "4,5",
-                ratingsNumber: "5"
-            },
-            price:{
-                oldPrice: 54999,
-                newPrice: 45999,
-            }
-        },{
-            preview: pepe,
-            title: "Телефон №1 с объемом памяти 16",
-            reviews: {
-                averageRating: "4,5",
-                ratingsNumber: "5"
-            },
-            price:{
-                oldPrice: 54999,
-                newPrice: 45999,
-            }
-        },
-        ]
-    }
     const [reviews, setReviews] = useState()
     const [device, setDevice] = useState()
     const [devices, setDevices] = useState()
-
-    console.log(reviews)
 
     const [reviewsInOneDevice, setReviewsInOneDevice] = useState()
 
@@ -151,7 +33,7 @@ const DevicePage = () => {
 
     let scroll = Scroll.animateScroll;
 
-    const toTop = ()=>scroll.scrollToTop()
+    const toTop = ()=>scroll.scrollToTop();
 
     const fetchData = async (setter, address) => {
         const result = await axios(
@@ -165,7 +47,14 @@ const DevicePage = () => {
         fetchData(setDevices, "device");
         toTop();
     }, [params])
-    console.log(reviewsInOneDevice);
+
+    function addToBasketAndInform() {
+        const data = addToBasket(device.id)
+
+        if (data){
+            console.log("success")
+        }
+    }
     return (
         <div className="DevicePage">
             <h1 className="DevicePage__title">{device? device.name: ""}</h1>
@@ -215,11 +104,11 @@ const DevicePage = () => {
                             <h2 className="price__newPrice">{device?device.newPrice:""}.-</h2>
                         ):("")}
                     </div>
-                    <div className="actions">
-                        <button className="actions__main"><h2>В корзину</h2></button>
+                    {user.user._isAuth?(<div className="actions">
+                        <button className="actions__main" onClick={addToBasketAndInform}><h2>В корзину</h2></button>
                         <button className="actions__secondary"><img className="secondarybtnImg" src={compareImg} alt=""/></button>
                         <button className="actions__secondary"><img className="secondarybtnImg" src={favouriteImg} alt=""/></button>
-                    </div>
+                    </div>):(<h2>Авторизуйтесь, чтобы использовать этот блок</h2>)}
                 </div>
             </div>
             <div className="description">

@@ -3,24 +3,40 @@ import alertImg from "./imgs/alert.svg"
 import favouriteImg from "./imgs/heart.svg"
 import destroyImg from "./imgs/close.svg"
 import toBasket from "./imgs/toBasket.svg"
+import {FC, useEffect, useState, Dispatch, SetStateAction} from "react";
+import {IBasket, IDeviceCard} from "../../types/types";
+import axios from "axios";
 
-export default function BasketCard(props) {
+interface IBasketCardProps {
+    device: IDeviceCard;
+    from: string;
+}
+
+const BasketCard: FC<IBasketCardProps> = (props)=> {
     return(
         <div className="BasketCard">
-            <img src={props.device.img} alt="" className="BasketCard__preview"/>
+            <img src={process.env.REACT_APP_STATIC_URL+""+props.device.img} alt="" className="BasketCard__preview"/>
             <div className="card">
                 <div className="deviceInfo">
                     <div className="infoHeader">
-                        <p className="infoHeader__title">{props.device.title}</p>
-                        <div className="amount">
-                            <img src={alertImg} alt="" className="amount__alert"/>
-                            <span className="amount__title">Осталось {props.device.amount} шт.</span>
+                        <p className="infoHeader__title">{props.device.name}</p>
+                        {props.device.amount<=10?(
+                            <div className="amount">
+                                <img src={alertImg} alt="" className="amount__alert"/>
+                                <span className="amount__title">Осталось {props.device.amount} шт.</span>
+                            </div>
+                        ):("")}
+                    </div>
+                    {props.device.newPrice?(
+                        <div className="price">
+                            <p className="price__new">{props.device.newPrice}.-</p>
+                            <span className="price__old">{props.device.price}</span>
                         </div>
-                    </div>
-                    <div className="price">
-                        <p className="price__new">{props.device.price.newPrice}.-</p>
-                        <span className="price__old">{props.device.price.oldPrice}</span>
-                    </div>
+                    ):(
+                        <div className="price">
+                            <p className="price__new">{props.device.price}.-</p>
+                        </div>
+                    )}
                 </div>
                 <div className="devicePanel">
                     <div className="main">
@@ -51,3 +67,4 @@ export default function BasketCard(props) {
         </div>
     )
 }
+export default BasketCard;

@@ -7,13 +7,13 @@ import {user} from "../../store/UserState"
 import {Context} from "../../index";
 
 const Header = observer( (props)=>{
-    const {user} = useContext(Context)
+    const user = useContext(Context)
     const [isPanelActive, setIsPanelActive] = useState(false);
     const [isCatalogActive, setIsCatalogActive] = useState(false);
-    let [isAuth, setIsAuth] = useState();
-    useEffect(()=>{
+    /*let [isAuth, setIsAuth] = useState();*/
+    /*useEffect(()=>{
         setIsAuth(user.isAuth)
-    },[user.isAuth])
+    },[])*/
     const catalogItems = [{
         title: "Смартфоны и гаджеты",
         link: "/1",
@@ -55,9 +55,9 @@ const Header = observer( (props)=>{
                     <p className="actionsBlock__action">Проверить статус заказа</p>
                 </div>
                 <NavLink to={"/Contacts"} className="contacts" href="#"><p>Контакты</p></NavLink>
-                {isAuth?(
+                {user.user._isAuth?(
                     <div className="personalAccount">
-                        <p className="personalAccount__title" data-show-panel="show">Здравствуйте, {user._user.name}</p>
+                        <p className="personalAccount__title" data-show-panel="show">Здравствуйте, {user.user._user.name}</p>
                         {isPanelActive?(
                             <div className="panel">
                                 <NavLink to={"/lk"} className="panel__item panel__item_lk" href="#"><p>Личный кабинет</p> </NavLink>
@@ -65,6 +65,7 @@ const Header = observer( (props)=>{
                                 <NavLink to={"/login"} onClick={()=> {
                                     user.setIsAuth(false);
                                     user.setUser("")
+                                    localStorage.setItem("token", "")
                                 }} className="panel__item panel__item__logOut" href="#"><p>Выйти</p> </NavLink>
                             </div>
                         ):("")}

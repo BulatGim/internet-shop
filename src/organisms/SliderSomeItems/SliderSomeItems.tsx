@@ -115,33 +115,42 @@ const SliderSomeItems: FC<ISliderProps> = ({arrayItems})=>{
     }
     return(
         <div className="SliderSomeItems" onTouchStart={(e)=>handleTouchStart(e)} onTouchMove={(e)=>handleTouchMove(e)} onMouseDown={(e)=>handleMouseDown(e)} onMouseMove={(e)=>handleMouseMove(e)} onMouseUp={(e)=>handleMouseUp(e)} onMouseLeave={(e)=>handleMouseUp(e)}>
-            {/*<button className="prevSlide" onClick={doPrevSlide}><img className="prevSlide__img" src={arrow} alt=""/></button>*/}
-            <div className="SliderSomeItems__img SliderSomeItems__img-prevDouble"
-                 key={prevImgDouble}>
-                {img[prevImgDouble]}
-            </div>
-            <div className="SliderSomeItems__img SliderSomeItems__img-prev"
-                 key={prevImgIndex}>
-                {img[prevImgIndex]}
-            </div>
-            <div className="SliderSomeItems__img SliderSomeItems__img-current"
-                 key={activeIndex}>
-                {img[activeIndex]}
-            </div>
-            <div className="SliderSomeItems__img SliderSomeItems__img-next"
-                 key={nextImgIndex}>
-                {img[nextImgIndex]}
-            </div>
-            <div className="SliderSomeItems__img SliderSomeItems__img-nextDouble"
-                 key={nextImgDouble}>
-                {img[nextImgDouble]}
-            </div>
-            {/*<button className="nextSlide" onClick={doNextSlide}><img className="nextSlide__img" src={arrow} alt=""/></button>*/}
-            <div className='SliderSomeItems-crumbs'>
-                {img.map((item, index) =>
-                    <span key={index} className={(activeIndex === index)?("SliderSomeItems-crumbs__item SliderSomeItems-crumbs__item_active"):("SliderSomeItems-crumbs__item")} onClick={(e)=>switchToGivenSlide(index)}></span>
+            {img.length>3?(
+                <>
+                    <button className="prevSlide" onClick={doPrevSlide}><img className="prevSlide__img" src={arrow} alt=""/></button>
+                <div className="SliderSomeItems__img SliderSomeItems__img-prevDouble"
+                     key={prevImgDouble}>
+                    {img[prevImgDouble]}
+                </div>
+                <div className="SliderSomeItems__img SliderSomeItems__img-prev"
+                key={prevImgIndex}>
+            {img[prevImgIndex]}
+                </div>
+                <div className="SliderSomeItems__img SliderSomeItems__img-current"
+                key={activeIndex}>
+            {img[activeIndex]}
+                </div>
+                <div className="SliderSomeItems__img SliderSomeItems__img-next"
+                key={nextImgIndex}>
+            {img[nextImgIndex]}
+                </div>
+                <div className="SliderSomeItems__img SliderSomeItems__img-nextDouble"
+                key={nextImgDouble}>
+            {img[nextImgDouble]}
+                </div>
+            <button className="nextSlide" onClick={doNextSlide}><img className="nextSlide__img" src={arrow} alt=""/></button>
+                <div className='SliderSomeItems-crumbs'>
+            {img.map((item, index) =>
+                <span key={index} className={(activeIndex === index)?("SliderSomeItems-crumbs__item SliderSomeItems-crumbs__item_active"):("SliderSomeItems-crumbs__item")} onClick={(e)=>switchToGivenSlide(index)}></span>
                 )}
-            </div>
+                </div>
+                </>
+            ):(
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                    {img}
+                </div>
+            )}
+
         </div>
     )
 }

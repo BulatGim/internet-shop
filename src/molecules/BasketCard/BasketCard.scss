@@ -2,7 +2,9 @@
   margin-top: 1.5rem;
   display: flex;
   &__preview{
-
+    max-width: 10rem;
+    max-height: 15rem;
+    object-fit: cover;
   }
   span{
     font-size: 16px;
@@ -30,6 +32,7 @@
         }
       }
       .price{
+        text-align: right;
         &__new{
 
         }

@@ -8,7 +8,7 @@ import {Context} from "../../index";
 import {SHOP_ROUTE} from "../../utils/consts";
 
 const Auth = observer( ()=>{
-    const {user} = useContext(Context)
+    const {user, basket} = useContext(Context)
     let navigate = useNavigate();
 
     const [auth, setAuth] = useState("registration")
@@ -16,7 +16,6 @@ const Auth = observer( ()=>{
     const [values, setValues] = useState({phone: "+7(___)___-__-__"});
 
     const [userError, setUserError] = useState([])
-    console.log(userError)
 
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
@@ -106,15 +105,16 @@ const Auth = observer( ()=>{
 
                     if (userError.length<1){
                         data = await login(values.email, values.password)
-                        user.setUser(data);
+                        user.setUser(data.user);
                         user.setIsAuth(true)
+                        basket.setUserBasket(data.basket)
                         navigate(SHOP_ROUTE)
                     }
                 } else {
                     console.log("error")
                 }
         }catch (e) {
-            return /*e.response.data.message*/ alert(e.response.data.message)
+            return alert(e.response.data.message)
         }
     }
 
@@ -236,7 +236,6 @@ const Auth = observer( ()=>{
                         setAuth("registration")
                         setUserError([])
                     }}>Зарегистрироваться</span></p>
-
                 </div>
             )}
         </div>
