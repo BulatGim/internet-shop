@@ -34,3 +34,18 @@ export const getBasketDevices = async ()=>{
     const basket = await $authHost.get('api/basket')
     return basket.data.array;
 }
+
+export const getTypes = async ()=>{
+    const types = await $host.get('api/type')
+    return types.data;
+}
+
+export const getBrands = async ()=>{
+    const brands = await $host.get('api/brand')
+    return brands.data;
+}
+
+export const getDevices = async ()=>{
+    const devices = await $host.get('api/device/getAll')
+    return devices.data;
+}

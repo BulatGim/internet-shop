@@ -98,12 +98,6 @@ const NewReview:FC<INewReviewProps> = ({name, id, closeSetter}) => {
         }
     }, [values.rating])
 
-    function closeModal(e: any){
-        if (e.target.getAttribute("data-close-modal")){
-            closeSetter();
-        }
-    }
-
     async function send(){
         allValidations();
         if (userError.length<1){
@@ -120,16 +114,14 @@ const NewReview:FC<INewReviewProps> = ({name, id, closeSetter}) => {
     // компонент должен отправлять рэйтинг от 0 до 5, преимущества, недостатки, комментарий
 
     return (
-        <div className="newReview" data-close-modal="yes" onClick={(e)=>closeModal(e)}>
-            <div className="newReview-container">
-                <h2 className="newReview-container__title">Отзыв на {name}</h2>
-                <FormInput errors={userError} name={"rating"} value={values.rating || ""} placeholder={"Ваш рейтинг (в цифрах от 0 до 5)"} input={false} width={27} height={3} inputType={""} required={true} setter={handleChange} maxLength={1}/>
-                <FormInput errors={userError} name={"advantages"} value={values.advantages} placeholder={"Преимущества"} input={false} width={27} height={7} inputType={""} required={true} setter={handleChange}/>
-                <FormInput errors={userError} name={"disadvantages"} value={values.disadvantages} placeholder={"Недостатки"} input={false} width={27} height={7} inputType={""} required={true} setter={handleChange} />
-                <FormInput errors={userError} name={"comment"} value={values.comment} placeholder={"Комментарий"} input={false} width={27} height={13} inputType={""} required={true} setter={handleChange}/>
-                <button className="newReview-container__sendBtn" onClick={send}><h3>Отправить</h3></button>
-            </div>
-        </div>
+        <>
+            <h2 className="newReview-container__title">Отзыв на {name}</h2>
+            <FormInput errors={userError} name={"rating"} value={values.rating || ""} placeholder={"Ваш рейтинг (в цифрах от 0 до 5)"} input={false} width={27} height={3} inputType={""} required={true} setter={handleChange} maxLength={1}/>
+            <FormInput errors={userError} name={"advantages"} value={values.advantages} placeholder={"Преимущества"} input={false} width={27} height={7} inputType={""} required={true} setter={handleChange}/>
+            <FormInput errors={userError} name={"disadvantages"} value={values.disadvantages} placeholder={"Недостатки"} input={false} width={27} height={7} inputType={""} required={true} setter={handleChange} />
+            <FormInput errors={userError} name={"comment"} value={values.comment} placeholder={"Комментарий"} input={false} width={27} height={13} inputType={""} required={true} setter={handleChange}/>
+            <button className="newReview-container__sendBtn" onClick={send}><h3>Отправить</h3></button>
+        </>
     );
 };
 

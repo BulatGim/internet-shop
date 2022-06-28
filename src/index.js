@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import UserStore from './store/UserState';
 import DeviceStore from "./store/DeviceStore";
 import BasketStore from "./store/BasketStore";
+import ServiceStore from "./store/serviceStore";
 
 
 export const Context = createContext(null)
@@ -16,7 +17,8 @@ root.render(
     <Context.Provider value={{
       user: new UserStore(),
         devices: new DeviceStore(),
-        basket: new BasketStore()
+        basket: new BasketStore(),
+        service: new ServiceStore()
     }}>
       <App />
     </Context.Provider>

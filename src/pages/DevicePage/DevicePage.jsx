@@ -11,6 +11,8 @@ import Scroll from "react-scroll"
 import axios from "axios";
 import {addToBasket} from "../../http/userAPI";
 
+import {authInterceptor} from "../../http";
+
 import {Context} from "../../index";
 
 const DevicePage = () => {
@@ -36,8 +38,12 @@ const DevicePage = () => {
     const toTop = ()=>scroll.scrollToTop();
 
     const fetchData = async (setter, address) => {
-        const result = await axios(
+        let config = {
+            headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+        };
+        let result = await axios.get(
             process.env.REACT_APP_API_URL+address,
+            (user.user._isAuth && address==="device/"+params.id)?config:""
         );
         setter(result.data)
     };

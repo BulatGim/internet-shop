@@ -3,17 +3,36 @@ import "./Header.css"
 import {Link, NavLink} from "react-router-dom";
 import loupe from "./imgs/loupe.svg"
 import {observer} from "mobx-react-lite";
-import {user} from "../../store/UserState"
 import {Context} from "../../index";
+import axios from "axios";
+import {CATALOGUE_ROUTE} from "../../utils/consts";
 
 const Header = observer( (props)=>{
-    const user = useContext(Context)
+    const context = useContext(Context)
     const [isPanelActive, setIsPanelActive] = useState(false);
     const [isCatalogActive, setIsCatalogActive] = useState(false);
-    /*let [isAuth, setIsAuth] = useState();*/
-    /*useEffect(()=>{
-        setIsAuth(user.isAuth)
-    },[])*/
+    const [types, setTypes] = useState([])
+
+    useEffect(()=>{
+        fetchData(setTypes, "type")
+    }, [])
+
+    useEffect(()=>{
+        context.service.setOverFlowHidden(isCatalogActive)
+    }, [isCatalogActive])
+
+
+
+    const fetchData = async (setter, address) => {
+        const result = await axios(
+            process.env.REACT_APP_API_URL+address+'/'
+        );
+        setter(result.data)
+    };
+
+
+
+
     const catalogItems = [{
         title: "Смартфоны и гаджеты",
         link: "/1",
@@ -55,17 +74,17 @@ const Header = observer( (props)=>{
                     <p className="actionsBlock__action">Проверить статус заказа</p>
                 </div>
                 <NavLink to={"/Contacts"} className="contacts" href="#"><p>Контакты</p></NavLink>
-                {user.user._isAuth?(
+                {context.user.isAuth?(
                     <div className="personalAccount">
-                        <p className="personalAccount__title" data-show-panel="show">Здравствуйте, {user.user._user.name}</p>
+                        <p className="personalAccount__title" data-show-panel="show">Здравствуйте, {context.user._user?context.user.user.name:""}</p>
                         {isPanelActive?(
                             <div className="panel">
                                 <NavLink to={"/lk"} className="panel__item panel__item_lk" href="#"><p>Личный кабинет</p> </NavLink>
                                 <NavLink to={"/basket"} className="panel__item panel__item__basket" href="#"><p>Корзина</p> </NavLink>
                                 <NavLink to={"/login"} onClick={()=> {
-                                    user.setIsAuth(false);
-                                    user.setUser("")
                                     localStorage.setItem("token", "")
+                                    context.user.setIsAuth(false);
+                                    context.user.setUser("")
                                 }} className="panel__item panel__item__logOut" href="#"><p>Выйти</p> </NavLink>
                             </div>
                         ):("")}
@@ -97,8 +116,8 @@ const Header = observer( (props)=>{
             </div>
             {isCatalogActive?(
                 <div className="showedCatalog">
-                    {catalogItems.map(item=>
-                        <Link className="showedCatalog__link" to={item.link}><h3 className="showedCatalog__item">{item.title}</h3></Link>
+                    {types.map(item=>
+                        <Link className="showedCatalog__link" to={CATALOGUE_ROUTE+"/"+item.id}><h3 className="showedCatalog__item">{item.name}</h3></Link>
                     )}
                 </div>
             ):("")}

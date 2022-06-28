@@ -1,5 +1,5 @@
 import Review from "../../molecules/review/review"
-import {FC, useContext, useState} from "react"
+import {FC, useContext, useEffect, useState} from "react"
 import {IReview} from "../../types/types";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
@@ -10,6 +10,7 @@ import NewReview from "../../molecules/newReview/newReview";
 import {Link} from "react-router-dom";
 
 import SliderSomeItems from "../../organisms/SliderSomeItems/SliderSomeItems"
+import ModalTemplate from "../../templates/modalTemplate/modalTemplate";
 
 
 interface IReviewsProps {
@@ -23,7 +24,10 @@ interface IReviewsProps {
 }
 const Reviews: FC<IReviewsProps> = observer(({reviews, generalRate, device})=>{
     const [isNewReviewActive, setIsNewReviewActive] = useState<boolean>(false)
-    let user = useContext<any>(Context)
+    useEffect(()=>{
+        context.service.setOverFlowHidden(isNewReviewActive);
+    }, [isNewReviewActive]);
+    let context = useContext<any>(Context)
     return(
         <div className="reviews" id="reviews">
             {generalRate ? (
@@ -58,7 +62,7 @@ const Reviews: FC<IReviewsProps> = observer(({reviews, generalRate, device})=>{
             </div>
             <div className="reviews-actions">
                 {device?(
-                    user.user._isAuth?(
+                    context.user.isAuth?(
                         <button className="reviews-actions__leave" onClick={()=> setIsNewReviewActive(true)}><h3>Оставить отзыв</h3></button>
                     ):(
                         <Link className="reviews-actions__link" to={LOGIN_ROUTE}><h3>Вам необходимо авторизоваться для того, чтобы оставлять отзывы</h3></Link>
@@ -66,7 +70,9 @@ const Reviews: FC<IReviewsProps> = observer(({reviews, generalRate, device})=>{
                 ):("")}
             </div>
             {isNewReviewActive?(
-                <NewReview id={device.id} name={device.name} closeSetter={()=>setIsNewReviewActive(false)}/>
+                <ModalTemplate closeSetter={()=>setIsNewReviewActive(false)} >
+                    <NewReview id={device.id} name={device.name} closeSetter={()=>setIsNewReviewActive(false)}/>
+                </ModalTemplate>
             ):("")}
         </div>
     )

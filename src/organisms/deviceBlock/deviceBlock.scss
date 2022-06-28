@@ -7,4 +7,11 @@
     margin-top: 2rem;
     display: flex;
   }
+  &-noDevices{
+    display: flex;
+    margin-top: 2rem;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+  }
 }

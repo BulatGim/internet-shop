@@ -10,10 +10,27 @@
     padding: 0.5rem 1.5rem;
     box-shadow: -4px -4px 20px rgba(236, 236, 236, 0.25), 3px 3px 10px rgba(0, 0, 0, 0.15);
   }
-  &__devices{
-    margin-left: 2rem;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-row-gap: 2.25rem;
+  &-devices{
+    &__container{
+      margin-left: 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-row-gap: 2.25rem;
+    }
+    .pagination{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 3rem;
+      &__prev{
+        cursor: pointer;
+      }
+      &__next{
+        cursor: pointer;
+        margin-left: 2rem;
+        transform: rotate(180deg);
+      }
+    }
   }
+
 }
