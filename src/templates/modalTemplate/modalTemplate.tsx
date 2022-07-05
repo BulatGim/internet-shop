@@ -1,16 +1,21 @@
 import {FC, ReactNode, useContext} from 'react';
 import "./modalTemplate.scss"
 import {Context} from "../../index";
+import {observer} from "mobx-react-lite";
 
 interface IModalTemplateProps {
     children: ReactNode;
     closeSetter: ()=>void;
 }
 
-const ModalTemplate: FC<IModalTemplateProps> = ({children, closeSetter}) => {
+const ModalTemplate: FC<IModalTemplateProps> = observer(({children, closeSetter}) => {
+    const context = useContext<any>(Context)
+
     function closeModal(e: any){
         if (e.target.getAttribute("data-close-modal")){
-            closeSetter();
+            return closeSetter();
+        }else{
+            return;
         }
     }
     return (
@@ -20,6 +25,6 @@ const ModalTemplate: FC<IModalTemplateProps> = ({children, closeSetter}) => {
             </div>
         </div>
     );
-};
+});
 
 export default ModalTemplate;

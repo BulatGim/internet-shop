@@ -1,28 +1,47 @@
-import React, {useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useContext, useEffect, useState, useCallback, FC,} from 'react';
 import FormInput from "../../atoms/formInput/formInput";
-import "./Auth.scss"
-import {registration, login} from "../../http/userAPI";
-import {observer} from "mobx-react-lite";
-import {Context} from "../../index";
+import {login, registration} from "../../http/userAPI";
 import {SHOP_ROUTE} from "../../utils/consts";
-import Registration from "../../organisms/registration/registration";
+import {Context} from "../../index";
+import {useNavigate} from "react-router-dom";
+import "./registration.scss"
 
-const Auth = observer( ()=>{
-    const {user, basket} = useContext(Context)
+interface IFormValues {
+    name?: string;
+    surname?: string;
+    patronymic?: string;
+    email?: string;
+    birthday?: string;
+    phone?: string;
+    password?: string;
+    repeatPassword?: string;
+}
+interface IUserError {
+    formInput:string;
+    message:string;
+}
+interface IRegistrationProps {
+    valuesProps?: IFormValues
+}
+
+const Registration:FC<IRegistrationProps> = ({valuesProps}) => {
+    const [values, setValues] = useState<IFormValues>({phone: "+7(___)___-__-__"});
+
+    const {user, basket} = useContext<any>(Context)
+
+    const [userError, setUserError] = useState<any[]>([])
+    const [, updateState] = useState<any>();
+    const forceUpdate = useCallback(() => updateState({}), []);
     let navigate = useNavigate();
 
-    const [auth, setAuth] = useState("registration")
+    useEffect(()=>{
+        valuesProps?(setValues({
+            ...valuesProps,
+            password: ""
+        })):setValues({phone: "+7(___)___-__-__"})
+    }, [valuesProps])
 
-    const [values, setValues] = useState({phone: "+7(___)___-__-__"});
-
-    const [userError, setUserError] = useState([])
-
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
-
-
-    function handleChange(e) {
+    function handleChange(e:any) {
         const { name, value } = e.target;
         setValues({
             ...values,
@@ -30,7 +49,7 @@ const Auth = observer( ()=>{
         })
     }
 
-    function handleBigChange(value, inputName) {
+    function handleBigChange(value:string|number, inputName:string) {
         setValues({
             ...values,
             [inputName]: value
@@ -38,7 +57,8 @@ const Auth = observer( ()=>{
     }
 
 
-    function hideUserError(formInput) {
+    function hideUserError(formInput:string) {
+
         for (let i = 0; i < userError.length; i++){
             if (userError[i].formInput === formInput){
                 let arr = userError;
@@ -47,8 +67,9 @@ const Auth = observer( ()=>{
                 forceUpdate();
             }
         }
+        return false
     }
-    function showUserError(formInput, errorMessage){
+    function showUserError(formInput:string, errorMessage:string){
         let prev;
         userError.map((item)=>{
             if (item.formInput===formInput){
@@ -58,11 +79,11 @@ const Auth = observer( ()=>{
         if (prev){
             return
         }
-        let obj = {
+        let obj:any = {
             error: errorMessage,
             formInput: formInput
         }
-        let errors = userError;
+        let errors:any[] = userError;
         errors.push(obj);
         setUserError(errors)
         forceUpdate();
@@ -85,52 +106,37 @@ const Auth = observer( ()=>{
     function nameValidation(){
         values.name?hideUserError("name"):showUserError("name", "Имя не может быть пустым")
     }
-    console.log(values)
 
     async function send() {
         emailValidation();
         passwordValidation();
         try {
             let data;
-                if (auth === "registration") {
-                    repeatPasswordValidation();
-                    nameValidation();
-                    dateValidation();
-                    if (userError.length<1){
-                        data = await registration(values.name, values.surname, values.patronymic, /*phone,*/ values.birthday, values.email, values.password)
-                        user.setUser(data);
-                        user.setIsAuth(true)
-                        navigate(SHOP_ROUTE)
-                    }
-                } else if (auth === "login") {
-
-                    if (userError.length<1){
-                        data = await login(values.email, values.password)
-                        user.setUser(data.user);
-                        user.setIsAuth(true)
-                        basket.setUserBasket(data.basket)
-                        navigate(SHOP_ROUTE)
-                    }
-                } else {
-                    console.log("error")
-                }
+            repeatPasswordValidation();
+            nameValidation();
+            dateValidation();
+            if (userError.length<1){
+                data = await registration(values.name, values.surname, values.patronymic, /*phone,*/ values.birthday, values.email, values.password)
+                user.setUser(data);
+                user.setIsAuth(true)
+                navigate(SHOP_ROUTE)
+            }
         }catch (e) {
             return alert(e.response.data.message)
         }
     }
 
-    function dateInputMask(e) {
-        console.log(e.keyCode)
+    function dateInputMask(e:any) {
         if(e.keyCode === 8 || e.keyCode === 46){
             e.preventDefault()
-            let arr = values.birthday.split("");
+            let arr:string[] | any = values.birthday&&values.birthday.split("");
             arr.pop()
             let str = arr.join("")
             handleBigChange(str, "birthday")
         }else if((e.keyCode < 47 || e.keyCode > 57) && (e.keyCode<96 || e.keyCode>106)){
             return e.preventDefault()
         }else{
-            let arr = values.birthday.split("");
+            let arr:string[] | any = values.birthday&&values.birthday.split("");
             if (arr.length === 5 || arr.length === 2){
                 handleBigChange(values.birthday+"/", "birthday");
             }
@@ -140,7 +146,7 @@ const Auth = observer( ()=>{
     function dateValidation(){
         let year = new Date().getFullYear()
         if (values.birthday){
-            let arr = values.birthday.split("/")
+            let arr:any = values.birthday.split("/")
             if(arr[0]>32 || arr[1]>13 || arr[2]>year+1 || arr[2]<1900-1){
                 if (arr[0]>32){
                     arr[0] = 31;
@@ -165,15 +171,15 @@ const Auth = observer( ()=>{
             return
         }
     }
-    function phoneInputMask(e) {
+    function phoneInputMask(e:any) {
         if (e.keyCode === 8 || e.keyCode === 46){
             e.preventDefault()
-            let arr = values.phone.split("").reverse();
-            let abc = Boolean;
+            let arr: any = values.phone&&values.phone.split("").reverse();
+            let abc:boolean;
             for (let i = 0; i<arr.length-2; i++){
                 const regex = /[0-9]/;
                 abc = regex.test(String(arr[i]).toLowerCase());
-                if (abc===true){
+                if (abc){
                     arr.splice(i,1,"_")
                     let str = arr.reverse().join("")
                     return handleBigChange(str, "phone")
@@ -183,8 +189,8 @@ const Auth = observer( ()=>{
             return e.preventDefault()
         }else{
             e.preventDefault()
-            let arr = values.phone.split("")
-            const index = arr.findIndex((item)=> item==="_")
+            let arr:any = values.phone&&values.phone.split("")
+            const index = arr.findIndex((item:string)=> item==="_")
             arr[index] = e.key
             const str = arr.join("")
             handleBigChange(str, "phone")
@@ -195,38 +201,30 @@ const Auth = observer( ()=>{
         return (values.email === '')
             ? showUserError("email", "Email не может быть пустым")
             : hideUserError("email")
-            || (!regex.test(String(values.email).toLowerCase()))
+             || (!regex.test(String(values.email).toLowerCase()))
                 ? showUserError("email", "Некорректный email")
                 : hideUserError("email")
     }
-
-    return(
-        <div className="Auth">
-            {auth==="registration"?(
-                <div className="registration popUp">
-                    <h2 className="registration__title">Регистрация</h2>
-                    <Registration />
-                    <p className="registration__toLogin">Уже есть аккаунт? <span to="/login" onClick={()=> {
-                        setAuth("login");
-                        setUserError([])
-                    }}>Войти</span></p>
+    console.log(valuesProps, values)
+    return (
+        <div className="registration">
+            <form action="">
+                <FormInput placeholder="Фамилия" errors={userError} name={"surname"} value={values.surname || ""} setter={handleChange} width={27}/>
+                <div className="registration__name">
+                    <FormInput placeholder="Имя" errors={userError} name={"name"} value={values.name || ""} setter={handleChange} width={14} required={true}/>
+                    <FormInput placeholder="Отчество" errors={userError} name={"patronymic"} value={values.patronymic || ""} setter={handleChange} width={12}/>
                 </div>
-            ):(
-                <div className="login popUp">
-                    <h2 className="login__title">Войти</h2>
-                    <form action="">
-                        <FormInput value={values.email|| ""} setter={handleChange} name={"email"} errors={userError} required={true} placeholder="E-mail" width={27.5}/>
-                        <FormInput placeholder="Пароль" errors={userError} name={"password"} input={true} inputType={"password"} value={values.password || ""} setter={handleChange} width={27.5} required={true}/>
-                    </form>
-                    <button className="popUp__send" type="submit" onClick={send}><p>Отправить</p></button>
-                    <p className="login__text">Еще нет аккаунта?<span onClick={()=> {
-                        setAuth("registration")
-                        setUserError([])
-                    }}>Зарегистрироваться</span></p>
+                <div className="registration__phoneDate">
+                    <FormInput placeholder="Телефон" errors={userError} name={"phone"} validation={phoneInputMask} value={values.phone || ""} setter={handleChange} width={16}/>
+                    <FormInput placeholder="Дата рождения" errors={userError} name={"birthday"} validation={dateInputMask} maxLength={10} width={10} value={values.birthday || ""} setter={handleChange}/>
                 </div>
-            )}
+                <FormInput placeholder="E-mail" errors={userError} name={"email"} value={values.email || ""} setter={handleChange} width={27} required={true}/>
+                <FormInput placeholder="Пароль" errors={userError} name={"password"} input={true} inputType={"password"} value={values.password || ""} setter={handleChange} width={27} required={true}/>
+                <FormInput placeholder="Повторите пароль" errors={userError} name={"repeatPassword"} input={true} inputType={"password"} value={values.repeatPassword || ""} setter={handleChange} width={27} />
+            </form>
+            <button className="registration__send" type="submit" onClick={send}><p>Отправить</p></button>
         </div>
-    )
-})
+    );
+};
 
-export default Auth;
+export default Registration;

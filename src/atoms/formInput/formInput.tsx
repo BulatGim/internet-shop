@@ -7,11 +7,11 @@ interface IFromInputProps {
     name: string;
     value: string | number;
     placeholder: string;
-    input: boolean;
+    input?: boolean;
     width: number;
-    height: number;
-    inputType: string;
-    required: boolean;
+    height?: number;
+    inputType?: string;
+    required?: boolean;
     setter: (e:ChangeEvent<HTMLTextAreaElement>|ChangeEvent<HTMLInputElement>)=> void;
     validation?: (e:KeyboardEvent<HTMLTextAreaElement>|ChangeEvent<HTMLInputElement>)=>void;
     maxLength?: number;

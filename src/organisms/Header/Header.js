@@ -6,12 +6,16 @@ import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 import axios from "axios";
 import {CATALOGUE_ROUTE} from "../../utils/consts";
+import ModalTemplate from "../../templates/modalTemplate/modalTemplate";
+import InfoBlock from "../../molecules/infoBlock/infoBlock";
 
 const Header = observer( (props)=>{
     const context = useContext(Context)
     const [isPanelActive, setIsPanelActive] = useState(false);
     const [isCatalogActive, setIsCatalogActive] = useState(false);
     const [types, setTypes] = useState([])
+
+    const [modalActive, setModalActive] = useState(false)
 
     useEffect(()=>{
         fetchData(setTypes, "type")
@@ -21,8 +25,6 @@ const Header = observer( (props)=>{
         context.service.setOverFlowHidden(isCatalogActive)
     }, [isCatalogActive])
 
-
-
     const fetchData = async (setter, address) => {
         const result = await axios(
             process.env.REACT_APP_API_URL+address+'/'
@@ -30,26 +32,6 @@ const Header = observer( (props)=>{
         setter(result.data)
     };
 
-
-
-
-    const catalogItems = [{
-        title: "Смартфоны и гаджеты",
-        link: "/1",
-    },{
-        title: "Видеотехника",
-        link: "/1",
-    },{
-        title: "Сетевое оборудование",
-        link: "/1",
-    },{
-        title: "Ноутбуки и планшеты",
-        link: "/1",
-    },{
-        title: "Компьютеры",
-        link: "/1",
-    },
-    ]
     function showHidePopup(e) {
         if (e.target.getAttribute("data-show-panel")==="show"){
             isPanelActive===true?setIsPanelActive(false):setIsPanelActive(true)
@@ -120,6 +102,11 @@ const Header = observer( (props)=>{
                         <Link className="showedCatalog__link" to={CATALOGUE_ROUTE+"/"+item.id}><h3 className="showedCatalog__item">{item.name}</h3></Link>
                     )}
                 </div>
+            ):("")}
+            {context.service.modal.isModalActive ? (
+                <ModalTemplate closeSetter={()=>context.service.setModal(false, null, null)}>
+                    <InfoBlock operation={context.service.modal.operation} text={context.service.modal.text}/>
+                </ModalTemplate>
             ):("")}
         </div>
     )

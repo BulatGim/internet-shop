@@ -58,8 +58,9 @@ const Review: FC<IReviewProps> = ({review})=>{
     },[]);
     return(
         <div className="review">
+            <img src={process.env.REACT_APP_STATIC_URL+""+review.devicePrevieew} alt="" className="review__devicePreview"/>
             <div className="user">
-                <p className="user__name">{review.userName}</p>
+                <p className="user__name">{review.userName || review.deviceTitle}</p>
                 {date? (<p className="user__date">{date[0]} {date[1]} {date[2]}</p>):""}
             </div>
             <div className="userRate">

@@ -49,3 +49,16 @@ export const getDevices = async ()=>{
     const devices = await $host.get('api/device/getAll')
     return devices.data;
 }
+
+export async function addToBasketAndInform(id, context) {
+    try {
+        const data = await addToBasket(id)
+        if (data){
+            let basketDevices = await getBasketDevices()
+            context.basket.setUserBasket(basketDevices)
+            context.service.setModal(true,"success", "Товар успешно добавлен в корзину")
+        }
+    }catch (e) {
+        context.service.setModal(true,"error", e.message)
+    }
+}

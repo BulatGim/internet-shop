@@ -15,8 +15,6 @@ const CataloguePage = observer(()=>{
 
     const [devices, setDevices] = useState([])
 
-    /*const [service, setService] = useState(context.service.activeFilter)*/
-
     let {types} = context.devices;
     let {brands} = context.devices;
     let service = context.service
@@ -47,7 +45,7 @@ const CataloguePage = observer(()=>{
         const result = await axios(
             process.env.REACT_APP_API_URL+""+address
         );
-        setter(result.data)
+        setter(result.data.rows)
     };
 
     useEffect(()=>{
@@ -62,19 +60,37 @@ const CataloguePage = observer(()=>{
         setPage(value)
     }
 
+    const [activeFilter, setActiveFilter] = useState(context.service.activeFilter)
+
     useEffect(()=>{
-        let activeDevices = devices&&devices.rows&&devices.rows.filter((elem)=>{
-            for (const elemKey in service.activeFilter) {
-                for (const index in service.activeFilter[elemKey]) {
-                    console.log(service.activeFilter[elemKey][index], elem[elemKey])
-                    return service.activeFilter[elemKey][index]===elem[elemKey];
+        setActiveFilter(context.service.activeFilter)
+    }, [context.service.activeFilter])
+
+    useEffect(()=>{
+        let activeDevices = devices&&devices.filter((elem)=>{
+            let bool = false;
+            for (let elemKey in service.activeFilter) {
+                console.log(elemKey)
+                for (let i = 0; i<service.activeFilter[elemKey].length; i++){
+                    /*console.log(i)
+                    console.log(service.activeFilter[elemKey][i], elem[elemKey])*/
+                    if (service.activeFilter[elemKey][i]===elem[elemKey]){
+                        /*console.log(service.activeFilter[elemKey])*/
+                        bool = true
+                        break
+                    }
                 }
+            }
+            if (bool){
+                return bool
             }
         });
         console.log(activeDevices);
         setDevices(activeDevices)
-        console.log(devices)
-    }, [context.service.activeFilter])
+    }, [activeFilter])
+    useEffect(()=>{
+        /*console.log(devices)*/
+    }, [devices])
 
     return(
         <div className="cataloguePage">
@@ -85,7 +101,7 @@ const CataloguePage = observer(()=>{
             </div>
             <div className="cataloguePage-devices">
                 <div className="cataloguePage-devices__container">
-                    {devices ? devices.rows&&devices.rows.map((item)=>
+                    {devices ? devices.map((item)=>
                         <DeviceFromDeviceBlock device={item}/>
                     ):("")}
                 </div>

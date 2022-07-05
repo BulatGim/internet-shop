@@ -1,11 +1,13 @@
 .device {
+  cursor: pointer;
   max-width: 14rem;
   margin-right: 2rem; }
-  .device:nth-child(4) {
-    margin-right: 0; }
   .device__preview {
-    width: 10rem;
-    height: 10rem; }
+    width: 100%;
+    max-width: 225px;
+    max-height: 100px;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .device__name {
     margin-top: 1rem; }
   .device .reviewsDeviceBlock {
@@ -51,6 +53,7 @@
       border: 0;
       display: block; }
       .device .actions__item_main {
+        cursor: pointer;
         width: 7rem; }
       .device .actions__item_secondary {
         width: 3rem; }

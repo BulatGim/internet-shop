@@ -1,0 +1,22 @@
+.registration{
+  max-width: 27rem;
+  &__title{
+    text-align: center;
+  }
+  &__name{
+    display: flex;
+    justify-content: space-between;
+  }
+  &__phoneDate{
+    display: flex;
+    justify-content: space-between;
+  }
+  &__toLogin{
+    margin-top: 1.25rem;
+    text-align: center;
+  }
+  &__send{
+    margin-top: 1.25rem;
+    padding: 0.25rem 1.25rem;
+  }
+}

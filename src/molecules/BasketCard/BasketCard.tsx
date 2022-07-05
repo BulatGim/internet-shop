@@ -3,16 +3,28 @@ import alertImg from "./imgs/alert.svg"
 import favouriteImg from "./imgs/heart.svg"
 import destroyImg from "./imgs/close.svg"
 import toBasket from "./imgs/toBasket.svg"
-import {FC, useEffect, useState, Dispatch, SetStateAction} from "react";
+import {FC, useEffect, useState, Dispatch, SetStateAction, useContext} from "react";
 import {IBasket, IDeviceCard} from "../../types/types";
 import axios from "axios";
+import {getBasketDevices} from "../../http/userAPI";
+import {Context} from "../../index";
+import {observer} from "mobx-react-lite";
 
 interface IBasketCardProps {
     device: IDeviceCard;
     from: string;
 }
 
-const BasketCard: FC<IBasketCardProps> = (props)=> {
+const BasketCard: FC<IBasketCardProps> = observer((props)=> {
+    let context= useContext<any>(Context)
+    async function destroyOne(deviceId: number) {
+        let data = await axios.delete(
+            process.env.REACT_APP_API_URL+'basket/'+deviceId,
+            {headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}}
+        )
+        let basketDevices = await getBasketDevices()
+        context.basket.setUserBasket(basketDevices)
+    }
     return(
         <div className="BasketCard">
             <img src={process.env.REACT_APP_STATIC_URL+""+props.device.img} alt="" className="BasketCard__preview"/>
@@ -45,7 +57,7 @@ const BasketCard: FC<IBasketCardProps> = (props)=> {
                             <span className="favourites__title">В избранное</span>
                         </div>
                         {props.from==="basket"?(
-                            <div className="destroy">
+                            <div className="destroy" onClick={()=>destroyOne(props.device.id)}>
                                 <img src={destroyImg} alt="" className="destroy__img"/>
                                 <span className="destroy__title">Убрать</span>
                             </div>
@@ -63,8 +75,7 @@ const BasketCard: FC<IBasketCardProps> = (props)=> {
                     </div>
                 </div>
             </div>
-
         </div>
     )
-}
+})
 export default BasketCard;

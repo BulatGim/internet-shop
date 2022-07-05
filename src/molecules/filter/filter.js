@@ -10,18 +10,19 @@ export default function Filter(props) {
     let context = useContext(Context)
     let {service} = context;
 
-    function setActiveFilter(num, filterName){
+    function setActiveFilter(typeId, filterName){
         if (!service.activeFilter[filterName]){
             service.setActiveFilter([], filterName)
         }
         let a = context.service.activeFilter[filterName]
-        a.push(num)
+        a.push(typeId)
+        console.log(context.service.activeFilter)
         service.setActiveFilter(a, filterName)
     }
     function handleInputChange(e){
             setValues({
                 ...values,
-                [e.target.name]: e.target.checked,
+                [e.target.name + ""]: e.target.checked,
                 filterType: e.target.getAttribute("data-filter-type")
             })
     }
@@ -31,10 +32,10 @@ export default function Filter(props) {
             let item = values[i];
             arr.push(item)
         }
-        if (arr[values.length>2&&values.length - 1 || [0]]){
-            setActiveFilter(Number(Object.keys(values)[Object.keys(values).length>2?(Object.keys(values).length - 2):0]),props.filter.filterType)
+        if (arr[values.length>2&&(values.length) || 0]){
+            setActiveFilter(Number(Object.keys(values)[Object.keys(values).length>2?(Object.keys(values).length - 1):0]),props.filter.filterType)
         }else if(!arr[0]){
-
+            console.log("!arr[0]")
         }
     }, [values])
     const [isFilterActive, setIsFilterActive] = useState(true)
@@ -53,7 +54,7 @@ export default function Filter(props) {
                     <div className="filter__items">
                         {props.filter.filterItems.map((item,index)=>
                             <div className="filterOption" key={index}>
-                                <input {...dataAttr} name={item.id} className="filterOption__input" type="checkbox" onChange={(e)=>handleInputChange(e)}/>
+                                <input {...dataAttr} name={"+"+item.id} className="filterOption__input" type="checkbox" onChange={(e)=>handleInputChange(e)}/>
                                 <span className="filterOption__title">{item.name}</span>
                             </div>
                         )}

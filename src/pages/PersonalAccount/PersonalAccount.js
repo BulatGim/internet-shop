@@ -1,73 +1,20 @@
 import "./PersonalAccount.scss"
 import avatarImg from "./imgs/avatar.svg"
 import FormInput from "../../atoms/formInput/formInput";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Review from "../../molecules/review/review";
 import devicePreview from "../BasketPage/imgs/devicePreview.svg";
 import PrevOrder from "../../organisms/PrevOrder/PrevOrder";
 import OrderMenu from "../../molecules/orderMenu/orderMenu";
 import Dialog from "../../molecules/Dialog/Dialog";
 import addresseeAvatar from "./imgs/addresseeAvatar.svg"
+import axios from "axios";
+import Registration from "../../organisms/registration/registration";
 
 export default function PersonalAccount() {
     const [activeTab, setActiveTab] = useState("personalData")
-    const user = {
-        img: avatarImg,
-        surname: "Иванов",
-        name: "Иван",
-        patronymic: "Иванович",
-        phone: "+7(499)999-99-99",
-        birthday: "28.06.2000",
-        email: "Ivanov@gmail.com",
-        gender: "M"
-    }
-    const reviews = [{
-        userName: "username1",
-        date: "28.06.2020",
-        rateNumber: "4,6",
-        reviewItem: [{
-            title: "Plus",
-            text: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ",
-        }, {
-            title: "Minus",
-            text: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ",
-        }, {
-            title: "Comment",
-            text: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ",
-        },
-        ]
-    },{
-        userName: "username1",
-        date: "28.06.2020",
-        rateNumber: "4,6",
-        reviewItem: [{
-            title: "Plus",
-            text: "there is some plus",
-        }, {
-            title: "Minus",
-            text: "there is some minus",
-        }, {
-            title: "Comment",
-            text: "there is some comment",
-        },
-        ]
-    },{
-        userName: "username1",
-        date: "28.06.2020",
-        rateNumber: "4,6",
-        reviewItem: [{
-            title: "Plus",
-            text: "there is some plus",
-        }, {
-            title: "Minus",
-            text: "there is some minus",
-        }, {
-            title: "Comment",
-            text: "there is some comment",
-        },
-        ]
-    },
-    ];
+    const [user, setUser] = useState({})
+    const [reviews, setReviews] = useState([])
     const prevOrders = [
         {
             number: 51,
@@ -157,6 +104,28 @@ export default function PersonalAccount() {
     },
     ]
 
+    const fetchData = async (setter, address) =>{
+        const result = await axios(
+            process.env.REACT_APP_API_URL+address+'/'
+        );
+        setter(result.data)
+    }
+
+    const fetchDataConfig = async (setter, address, config) => {
+        const result = await axios(
+            process.env.REACT_APP_API_URL+address+'/',
+            config
+        );
+        setter(result.data)
+        return result.data
+    };
+    useEffect(  () => {
+        /*fetchData(setPromotions, "promotions");*/
+        fetchDataConfig(setUser, "user/getOne", {
+            headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+        }).then((data)=>fetchData(setReviews,  "rating/user/"+data.user.id))
+    }, [])
+
     function changeTab(e) {
         let newTab = e.target.getAttribute("data-show");
         let activeClass = "PersonalAccount__item_active";
@@ -165,7 +134,6 @@ export default function PersonalAccount() {
         document.querySelector("."+"PAMenu__item_active").classList.remove("PAMenu__item_active");
         document.querySelector(`[data-show=${newTab}]`).classList.add("PAMenu__item_active");
     }
-
     return (
         <div className="PersonalAccount">
             <div className="PAMenu" onClick={e => changeTab(e)}>
@@ -179,7 +147,8 @@ export default function PersonalAccount() {
                 className="PersonalAccount__item PersonalAccount__item_active PersonalAccount__item_personalData PersonalData"
                 data-showing="personalData">
                 <span className="PersonalData__title">Редактирование личных данных</span>
-                <form className="personalData__form" action="">
+                <Registration valuesProps={user.user} />
+                {/*<form className="personalData__form" action="">
                     <div className="avatar">
                         <img className="avatar__preview" src={avatarImg} alt=""/>
                         <label className="avatar__label" htmlFor="avatar">
@@ -200,9 +169,9 @@ export default function PersonalAccount() {
                     <FormInput placeholder="Email" text={user.email} width={25}/>
                     <FormInput placeholder="Введите пароль" width={25}/>
                     <button className="sendBtn" type="submit"><p>Сохранить</p></button>
-                </form>
+                </form>*/}
             </div>
-            <div className="PersonalAccount__item PersonalAccount__item_orders orders" data-showing="orders">
+            {/*<div className="PersonalAccount__item PersonalAccount__item_orders orders" data-showing="orders">
                 <span className="orders__title">Ваши заказы</span>
                 {prevOrders?(
                     <div>
@@ -213,7 +182,7 @@ export default function PersonalAccount() {
                 ):(
                     <h2 className="orders__null">Вы не сделали не одного заказа</h2>
                 )}
-            </div>
+            </div>*/}
             <div className="PersonalAccount__item PersonalAccount__item_reviews reviews" data-showing="reviews">
                 <h3 className="reviews__title">Ваши отзывы</h3>
                 <div className="yoursReviews">

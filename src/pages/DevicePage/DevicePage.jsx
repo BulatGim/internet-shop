@@ -9,14 +9,16 @@ import React, {useContext, useEffect, useState} from "react";
 import DeviceBlock from "../../organisms/deviceBlock/deviceBlock";
 import Scroll from "react-scroll"
 import axios from "axios";
-import {addToBasket} from "../../http/userAPI";
+import {addToBasket, getBasketDevices} from "../../http/userAPI";
 
-import {authInterceptor} from "../../http";
-
+import {addToBasketAndInform} from "../../http/userAPI"
 import {Context} from "../../index";
+import ModalTemplate from "../../templates/modalTemplate/modalTemplate";
+import NewReview from "../../molecules/newReview/newReview";
+import InfoBlock from "../../molecules/infoBlock/infoBlock";
 
 const DevicePage = () => {
-    const user= useContext(Context);
+    const context= useContext(Context);
     const deviceOptions = [{
         option: "64GB",
     }, {
@@ -31,6 +33,8 @@ const DevicePage = () => {
 
     const [reviewsInOneDevice, setReviewsInOneDevice] = useState()
 
+    const [isInfo, setIsInfo] = useState(true)
+
     const params = useParams();
 
     let scroll = Scroll.animateScroll;
@@ -43,7 +47,7 @@ const DevicePage = () => {
         };
         let result = await axios.get(
             process.env.REACT_APP_API_URL+address,
-            (user.user._isAuth && address==="device/"+params.id)?config:""
+            (context.user._isAuth && address==="device/"+params.id)?config:""
         );
         setter(result.data)
     };
@@ -54,13 +58,7 @@ const DevicePage = () => {
         toTop();
     }, [params])
 
-    function addToBasketAndInform() {
-        const data = addToBasket(device.id)
 
-        if (data){
-            console.log("success")
-        }
-    }
     return (
         <div className="DevicePage">
             <h1 className="DevicePage__title">{device? device.name: ""}</h1>
@@ -110,8 +108,8 @@ const DevicePage = () => {
                             <h2 className="price__newPrice">{device?device.newPrice:""}.-</h2>
                         ):("")}
                     </div>
-                    {user.user._isAuth?(<div className="actions">
-                        <button className="actions__main" onClick={addToBasketAndInform}><h2>В корзину</h2></button>
+                    {context.user._isAuth?(<div className="actions">
+                        <button className="actions__main" onClick={()=>addToBasketAndInform(device.id, context)}><h2>В корзину</h2></button>
                         <button className="actions__secondary"><img className="secondarybtnImg" src={compareImg} alt=""/></button>
                         <button className="actions__secondary"><img className="secondarybtnImg" src={favouriteImg} alt=""/></button>
                     </div>):(<h2>Авторизуйтесь, чтобы использовать этот блок</h2>)}

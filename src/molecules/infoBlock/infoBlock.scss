@@ -1,0 +1,10 @@
+.infoBlock{
+  display: flex;
+  &__img{
+
+  }
+  &__text{
+    align-self: center;
+    margin-left: 3rem;
+  }
+}
