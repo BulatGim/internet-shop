@@ -1,5 +1,7 @@
-import {FC} from "react";
+import {FC, useContext} from "react";
 import "./orderMenu.scss"
+import {Context} from "../../index";
+import {newOrder} from "../../http/userAPI";
 
 interface IOrderMenuProps {
     text: string;
@@ -10,9 +12,14 @@ interface IOrderMenuProps {
 }
 
 const OrderMenu:FC<IOrderMenuProps> = (props)=>{
+    const context = useContext<any>(Context)
+    const makeNewOrder = async()=>{
+        const data = await newOrder(context.basket.userBasket)
+        console.log(data)
+    }
     return(
         <div className="content__menu">
-            <button className="arrange"><h3>{props.text}</h3></button>
+            <button className="arrange" onClick={()=>makeNewOrder()}><h3>{props.text}</h3></button>
             <div className="summary">
                 <div className="summary__item summary__item_main">
                     <h3>Итого </h3>

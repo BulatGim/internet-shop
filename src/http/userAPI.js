@@ -3,7 +3,6 @@ import jwtDecode from "jwt-decode";
 
 export const registration = async (name, surname, patronymic, /*phone,*/ birthday, email, password)=>{
     const {data} = await $host.post('api/user/registration', {name, surname, patronymic, /*phone,*/ birthday, email, password, role: "ADMIN"})
-    console.log(data)
     localStorage.setItem("token", data.token)
     return jwtDecode(data.token)
 }
@@ -12,6 +11,12 @@ export const login = async (email, password)=>{
     const {data} = await $host.post('api/user/login', {email, password})
     localStorage.setItem("token", data.token)
     return jwtDecode(data.token)
+}
+
+export const updateUserData = async (name, surname, patronymic, /*phone,*/ birthday, email, password)=>{
+    const {data} = await $authHost.put('api/user/change', {name, surname, patronymic, /*phone,*/ birthday, email, password, role: "ADMIN"})
+    localStorage.setItem("token", data.token)
+    return jwtDecode(data.token);
 }
 
 export const check = async ()=>{
@@ -48,6 +53,10 @@ export const getBrands = async ()=>{
 export const getDevices = async ()=>{
     const devices = await $host.get('api/device/getAll')
     return devices.data;
+}
+export const newOrder = async (devices)=>{
+    const order = await $authHost.post('api/orders', devices)
+    return order.data;
 }
 
 export async function addToBasketAndInform(id, context) {

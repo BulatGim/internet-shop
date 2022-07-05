@@ -1,9 +1,10 @@
 import {useContext, useEffect, useState, useCallback, FC,} from 'react';
 import FormInput from "../../atoms/formInput/formInput";
-import {login, registration} from "../../http/userAPI";
+import {login, registration, updateUserData} from "../../http/userAPI";
 import {SHOP_ROUTE} from "../../utils/consts";
 import {Context} from "../../index";
 import {useNavigate} from "react-router-dom";
+import {observer} from "mobx-react-lite";
 import "./registration.scss"
 
 interface IFormValues {
@@ -24,10 +25,10 @@ interface IRegistrationProps {
     valuesProps?: IFormValues
 }
 
-const Registration:FC<IRegistrationProps> = ({valuesProps}) => {
+const Registration:FC<IRegistrationProps> = observer(({valuesProps}) => {
     const [values, setValues] = useState<IFormValues>({phone: "+7(___)___-__-__"});
 
-    const {user, basket} = useContext<any>(Context)
+    const {user, basket, service} = useContext<any>(Context)
 
     const [userError, setUserError] = useState<any[]>([])
     const [, updateState] = useState<any>();
@@ -37,7 +38,8 @@ const Registration:FC<IRegistrationProps> = ({valuesProps}) => {
     useEffect(()=>{
         valuesProps?(setValues({
             ...valuesProps,
-            password: ""
+            password: "",
+            phone: "+7(___)___-__-__"
         })):setValues({phone: "+7(___)___-__-__"})
     }, [valuesProps])
 
@@ -109,20 +111,20 @@ const Registration:FC<IRegistrationProps> = ({valuesProps}) => {
 
     async function send() {
         emailValidation();
-        passwordValidation();
+        /*passwordValidation();*/
         try {
             let data;
-            repeatPasswordValidation();
+            /*repeatPasswordValidation();*/
             nameValidation();
             dateValidation();
             if (userError.length<1){
-                data = await registration(values.name, values.surname, values.patronymic, /*phone,*/ values.birthday, values.email, values.password)
+                data = await valuesProps?updateUserData(values.name, values.surname, values.patronymic, /*phone,*/ values.birthday, values.email, values.password):registration(values.name, values.surname, values.patronymic, /*phone,*/ values.birthday, values.email, values.password)
                 user.setUser(data);
-                user.setIsAuth(true)
-                navigate(SHOP_ROUTE)
+                user.setIsAuth(true);
+                valuesProps?(service.setModal(true,"success", "Данные успешно изменены!")):navigate(SHOP_ROUTE);
             }
         }catch (e) {
-            return alert(e.response.data.message)
+            return service.setModal(true,"error", e.message)
         }
     }
 
@@ -205,7 +207,6 @@ const Registration:FC<IRegistrationProps> = ({valuesProps}) => {
                 ? showUserError("email", "Некорректный email")
                 : hideUserError("email")
     }
-    console.log(valuesProps, values)
     return (
         <div className="registration">
             <form action="">
@@ -225,6 +226,6 @@ const Registration:FC<IRegistrationProps> = ({valuesProps}) => {
             <button className="registration__send" type="submit" onClick={send}><p>Отправить</p></button>
         </div>
     );
-};
+});
 
 export default Registration;

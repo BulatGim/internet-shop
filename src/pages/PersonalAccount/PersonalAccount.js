@@ -15,7 +15,8 @@ export default function PersonalAccount() {
     const [activeTab, setActiveTab] = useState("personalData")
     const [user, setUser] = useState({})
     const [reviews, setReviews] = useState([])
-    const prevOrders = [
+    const [prevOrders, setPrevOrders] = useState([])
+    /*const prevOrders = [
         {
             number: 51,
             date: "19.04.2020",
@@ -81,8 +82,7 @@ export default function PersonalAccount() {
             },
             ],
         },
-
-    ];
+    ];*/
     const dialogs = [{
         addresseePhoto: addresseeAvatar,
         title: "Some title",
@@ -121,9 +121,13 @@ export default function PersonalAccount() {
     };
     useEffect(  () => {
         /*fetchData(setPromotions, "promotions");*/
+        fetchDataConfig(setPrevOrders, "/orders", {
+            headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+        })
         fetchDataConfig(setUser, "user/getOne", {
             headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
-        }).then((data)=>fetchData(setReviews,  "rating/user/"+data.user.id))
+        }).then((data)=>fetchData(setReviews,  "rating/user/"+data.user.id));
+
     }, [])
 
     function changeTab(e) {
@@ -148,30 +152,8 @@ export default function PersonalAccount() {
                 data-showing="personalData">
                 <span className="PersonalData__title">Редактирование личных данных</span>
                 <Registration valuesProps={user.user} />
-                {/*<form className="personalData__form" action="">
-                    <div className="avatar">
-                        <img className="avatar__preview" src={avatarImg} alt=""/>
-                        <label className="avatar__label" htmlFor="avatar">
-                            <span className="avatar__title">Выберите файл</span>
-
-                        </label>
-                        <input className="avatar__input" name="avatar" type="file" id="avatar"/>
-                    </div>
-                    <FormInput placeholder="Фамилия" text={user.surname} width={25}/>
-                    <div className="namePatronymic">
-                        <FormInput placeholder="Имя" text={user.name} width={11}/>
-                        <FormInput placeholder="Отчество" text={user.patronymic} width={13}/>
-                    </div>
-                    <div className="phoneBirthday">
-                        <FormInput placeholder="Телефон" text={user.phone} width={13}/>
-                        <FormInput placeholder="Дата рождения" text={user.birthday} width={11}/>
-                    </div>
-                    <FormInput placeholder="Email" text={user.email} width={25}/>
-                    <FormInput placeholder="Введите пароль" width={25}/>
-                    <button className="sendBtn" type="submit"><p>Сохранить</p></button>
-                </form>*/}
             </div>
-            {/*<div className="PersonalAccount__item PersonalAccount__item_orders orders" data-showing="orders">
+            <div className="PersonalAccount__item PersonalAccount__item_orders orders" data-showing="orders">
                 <span className="orders__title">Ваши заказы</span>
                 {prevOrders?(
                     <div>
@@ -180,9 +162,9 @@ export default function PersonalAccount() {
                         )}
                     </div>
                 ):(
-                    <h2 className="orders__null">Вы не сделали не одного заказа</h2>
+                    <h2 className="orders__null">Вы не сделали ни одного заказа</h2>
                 )}
-            </div>*/}
+            </div>
             <div className="PersonalAccount__item PersonalAccount__item_reviews reviews" data-showing="reviews">
                 <h3 className="reviews__title">Ваши отзывы</h3>
                 <div className="yoursReviews">

@@ -63,11 +63,15 @@ const BasketPage = observer(()=>{
                 <p className="destroyBasket__title" onClick={()=>destroyAll()}>Убрать все ({basket.length})</p>
             </div>
             <div className="content">
-                <div className="devices">
-                    {basket.map(device=>
-                        <BasketCard key={device.id} device={device} from="basket"/>
-                    )}
-                </div>
+                {basket ?(
+                    <div className="devices">
+                        {basket.map(device=>
+                            <BasketCard key={device.id} device={device} from="basket"/>
+                        )}
+                    </div>
+                ):(
+                    <h2>В корзине пусто ;)</h2>
+                )}
                 <OrderMenu text="Оформить заказ" promotionSum={promotionSum} sum={sum} totalSum={totalSum} goodsNum={goodsNum}/>
             </div>
         </div>
