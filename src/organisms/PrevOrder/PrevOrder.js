@@ -17,7 +17,6 @@ export default function PrevOrder(props) {
         for (let i=0; i<props.order.length; i++){
             sum += props.order[i].device.price
             promotionSum += props.order[i].device.newPrice===0?(0):(props.order[i].device.price- props.order[i].device.newPrice);
-            console.log(sum, promotionSum)
         }
         totalSum = sum-promotionSum
         setSum(sum)
@@ -27,7 +26,13 @@ export default function PrevOrder(props) {
     useEffect(()=>{
         calculateAll()
     }, [])
-    console.log(props)
+    function doDevices(orders) {
+        let arr = [];
+        for (let i = 0; i<orders.length; i++){
+            arr.push(orders[i].device)
+        }
+        return arr
+    }
     return(
         <div className="prevOrder">
             <div className="prevOrder__leftBlock">
@@ -37,7 +42,7 @@ export default function PrevOrder(props) {
                 )}
             </div>
             <div className="prevOrder__rightBlock">
-                <OrderMenu text="Повторить заказ" promotionSum={promotionSum} sum={sum} totalSum={totalSum} goodsNum={goodsNum}/>
+                <OrderMenu text="Повторить заказ" promotionSum={promotionSum} sum={sum} totalSum={totalSum} goodsNum={goodsNum} devices={doDevices(props.order)}/>
             </div>
         </div>
     )

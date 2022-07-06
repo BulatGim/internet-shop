@@ -55,6 +55,7 @@ export const getDevices = async ()=>{
     return devices.data;
 }
 export const newOrder = async (devices)=>{
+    console.log(devices)
     const order = await $authHost.post('api/orders', devices)
     return order.data;
 }

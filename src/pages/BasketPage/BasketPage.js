@@ -11,7 +11,7 @@ import {observer} from "mobx-react-lite";
 
 const BasketPage = observer(()=>{
     let context = useContext(Context)
-    let basket = useContext(Context).basket._userBasket
+    let basket = useContext(Context).basket.userBasket
     /*const [values, setValues] = useState({});
     function handleChange(name, value){
         setValues({
@@ -72,7 +72,7 @@ const BasketPage = observer(()=>{
                 ):(
                     <h2>В корзине пусто ;)</h2>
                 )}
-                <OrderMenu text="Оформить заказ" promotionSum={promotionSum} sum={sum} totalSum={totalSum} goodsNum={goodsNum}/>
+                <OrderMenu text="Оформить заказ" promotionSum={promotionSum} sum={sum} totalSum={totalSum} goodsNum={goodsNum} devices={basket}/>
             </div>
         </div>
     )

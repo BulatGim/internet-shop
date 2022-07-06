@@ -16,7 +16,6 @@ interface IBasketCardProps {
 }
 
 const BasketCard: FC<IBasketCardProps> = observer((props)=> {
-    console.log(props)
     let context= useContext<any>(Context)
     async function destroyOne(deviceId: number) {
         let data = await axios.delete(

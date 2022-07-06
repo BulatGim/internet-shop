@@ -2,6 +2,7 @@ import {FC, useContext} from "react";
 import "./orderMenu.scss"
 import {Context} from "../../index";
 import {newOrder} from "../../http/userAPI";
+import {IDeviceCard} from "../../types/types";
 
 interface IOrderMenuProps {
     text: string;
@@ -9,13 +10,18 @@ interface IOrderMenuProps {
     goodsNum?: number;
     sum?: number;
     promotionSum?: number;
+    devices?: IDeviceCard[] | any
 }
 
 const OrderMenu:FC<IOrderMenuProps> = (props)=>{
-    const context = useContext<any>(Context)
     const makeNewOrder = async()=>{
-        const data = await newOrder(context.basket.userBasket)
-        console.log(data)
+        try {
+            const data = await newOrder(props.devices)
+            console.log(props.devices)
+        }catch (e) {
+            console.log(e)
+        }
+
     }
     return(
         <div className="content__menu">

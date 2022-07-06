@@ -10,6 +10,7 @@ import Dialog from "../../molecules/Dialog/Dialog";
 import addresseeAvatar from "./imgs/addresseeAvatar.svg"
 import axios from "axios";
 import Registration from "../../organisms/registration/registration";
+import SliderSomeItems from "../../organisms/SliderSomeItems/SliderSomeItems";
 
 export default function PersonalAccount() {
     const [activeTab, setActiveTab] = useState("personalData")
@@ -145,7 +146,7 @@ export default function PersonalAccount() {
                     data-show="personalData">Личные данные</h3>
                 <h3 className="PAMenu__item PAMenu__item_orders" data-show="orders">Ваши заказы</h3>
                 <h3 className="PAMenu__item PAMenu__item_reviews" data-show="reviews">Ваши отзывы</h3>
-                <h3 className="PAMenu__item PAMenu__item_chat" data-show="chat">Чат с поддержкой</h3>
+                {/*<h3 className="PAMenu__item PAMenu__item_chat" data-show="chat">Чат с поддержкой</h3>*/}
             </div>
             <div
                 className="PersonalAccount__item PersonalAccount__item_active PersonalAccount__item_personalData PersonalData"
@@ -168,19 +169,19 @@ export default function PersonalAccount() {
             <div className="PersonalAccount__item PersonalAccount__item_reviews reviews" data-showing="reviews">
                 <h3 className="reviews__title">Ваши отзывы</h3>
                 <div className="yoursReviews">
-                    {reviews.map((item,index)=>
+                    <SliderSomeItems arrayItems={reviews.map((item,index)=>
                         <Review key={index} review={item}/>
-                    )}
+                    )}/>
                 </div>
             </div>
-            <div className="PersonalAccount__item PersonalAccount__item_chat chat" data-showing="chat">
+            {/*<div className="PersonalAccount__item PersonalAccount__item_chat chat" data-showing="chat">
                 <h3 className="chat__title">Ваши диалоги</h3>
                 <div className="Dialogs">
                     {dialogs.map((dialog,index)=>
                         <Dialog key={index} dialog={dialog}/>
                     )}
                 </div>
-            </div>
+            </div>*/}
         </div>
     )
 }
