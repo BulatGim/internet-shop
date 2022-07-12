@@ -40,7 +40,7 @@ const Review: FC<IReviewProps> = ({review})=>{
             return alert("Ошибка")
         }
     }
-    const determineDates = (date:String)=>{
+    const determineDates = (date:string)=>{
         if (!date){
             return
         }

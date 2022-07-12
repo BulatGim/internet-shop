@@ -1,0 +1,23 @@
+.message{
+  background-color: lightgreen;
+  padding: 0.6rem 0.9rem;
+  border-radius: 25px;
+  align-self: end;
+  margin-top: 10px;
+  max-width: 80%;
+  &-content{
+    &__name{
+
+    }
+    &__text{
+
+    }
+    &__data{
+
+    }
+  }
+  &_notYours{
+    background-color:whitesmoke;
+    align-self: start;
+  }
+}

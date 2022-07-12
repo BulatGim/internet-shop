@@ -7,3 +7,4 @@ export const DEVICE_ROUTE = '/device';
 export const LK_ROUTE = '/lk';
 export const CONTACT_ROUTE = '/Contacts';
 export const CATALOGUE_ROUTE = '/catalogue';
+export const DIALOG_ROUTE = '/dialog'

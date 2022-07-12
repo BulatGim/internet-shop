@@ -1,0 +1,38 @@
+.dialogPage{
+  min-height: 600px;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  height: 75vh;
+  width: 100%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE и Edge */
+  scrollbar-width: none;  /* Firefox */
+  &-messagesContainer{
+    display: flex;
+    justify-content: end;
+    flex-direction: column;
+    min-height: 530px;
+    overflow: auto;
+  }
+  &-send{
+    position: sticky;
+    display: flex;
+    bottom: 0;
+    &__btn{
+      font-size: 18px;
+      margin-left: 2rem;
+      height: 3rem;
+      padding: 0 1rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to bottom right, blue, pink);
+      color: white;
+      align-self: center;
+      margin-bottom: -15px;
+    }
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
