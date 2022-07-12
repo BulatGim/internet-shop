@@ -14,14 +14,13 @@ interface IOrderMenuProps {
 }
 
 const OrderMenu:FC<IOrderMenuProps> = (props)=>{
+    let context = useContext<any>(Context)
     const makeNewOrder = async()=>{
         try {
             const data = await newOrder(props.devices)
-            console.log(props.devices)
         }catch (e) {
-            console.log(e)
+            context.service.setModal(true,"error", e.response.data.message?e.response.data.message:e.response.data.message)
         }
-
     }
     return(
         <div className="content__menu">

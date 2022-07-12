@@ -1,109 +1,21 @@
 import "./PersonalAccount.scss"
-import avatarImg from "./imgs/avatar.svg"
-import FormInput from "../../atoms/formInput/formInput";
 import {useEffect, useState} from "react";
 import Review from "../../molecules/review/review";
-import devicePreview from "../BasketPage/imgs/devicePreview.svg";
 import PrevOrder from "../../organisms/PrevOrder/PrevOrder";
-import OrderMenu from "../../molecules/orderMenu/orderMenu";
 import Dialog from "../../molecules/Dialog/Dialog";
-import addresseeAvatar from "./imgs/addresseeAvatar.svg"
 import axios from "axios";
 import Registration from "../../organisms/registration/registration";
 import SliderSomeItems from "../../organisms/SliderSomeItems/SliderSomeItems";
+import ModalTemplate from "../../templates/modalTemplate/modalTemplate";
+import NewDialogForm from "../../organisms/newDialogForm/newDialogForm";
 
 export default function PersonalAccount() {
+    const [isNewDialogActive, setIsNewDialogActive] = useState(false)
     const [activeTab, setActiveTab] = useState("personalData")
     const [user, setUser] = useState({})
     const [reviews, setReviews] = useState([])
     const [prevOrders, setPrevOrders] = useState([])
-    /*const prevOrders = [
-        {
-            number: 51,
-            date: "19.04.2020",
-            devices:[{
-                img: devicePreview,
-                title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-                price: {
-                    oldPrice: 15600,
-                    newPrice: 9600
-                },
-                amount: 10,
-                amountInBasket: 1
-            },{
-                img: devicePreview,
-                title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-                price: {
-                    oldPrice: 15600,
-                    newPrice: 9600
-                },
-                amount: 10,
-                amountInBasket: 1
-            },{
-                img: devicePreview,
-                title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-                price: {
-                    oldPrice: 15600,
-                    newPrice: 9600
-                },
-                amount: 10,
-                amountInBasket: 1
-            },
-            ],
-        },{
-            number: 51,
-            date: "19.04.2020",
-            devices:[{
-                img: devicePreview,
-                title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-                price: {
-                    oldPrice: 15600,
-                    newPrice: 9600
-                },
-                amount: 10,
-                amountInBasket: 1
-            },{
-                img: devicePreview,
-                title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-                price: {
-                    oldPrice: 15600,
-                    newPrice: 9600
-                },
-                amount: 10,
-                amountInBasket: 1
-            },{
-                img: devicePreview,
-                title: "Смартфон Xiaomi 12 Pro Blue 12GB 256GB",
-                price: {
-                    oldPrice: 15600,
-                    newPrice: 9600
-                },
-                amount: 10,
-                amountInBasket: 1
-            },
-            ],
-        },
-    ];*/
-    const dialogs = [{
-        addresseePhoto: addresseeAvatar,
-        title: "Some title",
-        lastMessage:"Some text",
-        addressee: "Попов Дмитрий Иванович",
-        date: "28.06.2021"
-    },{
-        addresseePhoto: addresseeAvatar,
-        title: "Some title",
-        lastMessage:"Some text",
-        addressee: "Попов Дмитрий Иванович",
-        date: "28.06.2021"
-    },{
-        addresseePhoto: addresseeAvatar,
-        title: "Some title",
-        lastMessage:"Some text",
-        addressee: "Попов Дмитрий Иванович",
-        date: "28.06.2021"
-    },
-    ]
+    const [dialogs, setDialogs] = useState([])
 
     const fetchData = async (setter, address) =>{
         const result = await axios(
@@ -128,8 +40,16 @@ export default function PersonalAccount() {
         fetchDataConfig(setUser, "user/getOne", {
             headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
         }).then((data)=>fetchData(setReviews,  "rating/user/"+data.user.id));
-
+        fetchDataConfig(setDialogs, "/dialogs", {
+            headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+        })
     }, [])
+
+    useEffect(()=>{
+        fetchDataConfig(setDialogs, "/dialogs", {
+            headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+        })
+    }, [isNewDialogActive])
 
     function changeTab(e) {
         let newTab = e.target.getAttribute("data-show");
@@ -146,7 +66,7 @@ export default function PersonalAccount() {
                     data-show="personalData">Личные данные</h3>
                 <h3 className="PAMenu__item PAMenu__item_orders" data-show="orders">Ваши заказы</h3>
                 <h3 className="PAMenu__item PAMenu__item_reviews" data-show="reviews">Ваши отзывы</h3>
-                {/*<h3 className="PAMenu__item PAMenu__item_chat" data-show="chat">Чат с поддержкой</h3>*/}
+                <h3 className="PAMenu__item PAMenu__item_chat" data-show="chat">Чат с поддержкой</h3>
             </div>
             <div
                 className="PersonalAccount__item PersonalAccount__item_active PersonalAccount__item_personalData PersonalData"
@@ -174,14 +94,20 @@ export default function PersonalAccount() {
                     )}/>
                 </div>
             </div>
-            {/*<div className="PersonalAccount__item PersonalAccount__item_chat chat" data-showing="chat">
+            <div className="PersonalAccount__item PersonalAccount__item_chat chat" data-showing="chat">
                 <h3 className="chat__title">Ваши диалоги</h3>
+                <button className="chat__new" onClick={()=> setIsNewDialogActive(true)}><h3>Создать новый чат</h3></button>
+                {isNewDialogActive?(
+                    <ModalTemplate closeSetter={()=>setIsNewDialogActive(false)} >
+                        <NewDialogForm closeSetter={()=>setIsNewDialogActive(false)}/>
+                    </ModalTemplate>
+                ):("")}
                 <div className="Dialogs">
-                    {dialogs.map((dialog,index)=>
-                        <Dialog key={index} dialog={dialog}/>
+                    {dialogs.map((dialog)=>
+                        <Dialog key={dialog.id} dialog={dialog}/>
                     )}
                 </div>
-            </div>*/}
+            </div>
         </div>
     )
 }

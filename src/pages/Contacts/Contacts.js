@@ -12,8 +12,8 @@ export default function Contacts() {
                     <h3>Еще раз здравствуйте! Я рад, что вы продолжили сёрфить по моему сайту, и перешли на эту страницу.
                         Я бы хотел вам кратко рассказать зачем же нужен этот сайт. Однажды мне сказали, что я никогда не смогу сделать интернет-магазин с полным его функционалом, после этого я бросил себе вызов сделать его.
                         В этом интернет магазине использованы следующие технологии:
-                        Frontend: React, mobx,
-                        Backend: NodeJS, bcrypt, express,cors,express-fileupload, jsonwebtoken, sequelize, postgreSQL, pgAdmin, cors, dotenv, typescrypt
+                        Frontend: React(react-hooks), mobx, typescrypt, dotenv
+                        Backend: NodeJS, bcrypt, express,cors,express-fileupload, jsonwebtoken, sequelize, postgreSQL, pgAdmin, cors, dotenv
                         Design: Figma</h3>
                     <h3 className="text__alert">
                         Позвольте напомнить вам еще раз, этот сайт не продает товары или услуги, он служит исключительно в качестве примера моей работы.
@@ -26,7 +26,7 @@ export default function Contacts() {
                             <img src={telegramImg} alt=""/>
                         </div>
                         <div className="contactMe__git">
-                            <h3 className="contactMe__text">git: </h3>
+                            <h3 className="contactMe__text">git: <a href="https://github.com/BulatGim">BulatGim</a></h3>
                             <img src={gitImg} alt=""/>
                         </div>
                     </div>

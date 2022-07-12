@@ -72,3 +72,23 @@ export async function addToBasketAndInform(id, context) {
         context.service.setModal(true,"error", e.message)
     }
 }
+
+export const createNewDialog = async (title, description)=>{
+    const {data} = await $authHost.post('api/dialogs', {title, description})
+    return data;
+}
+
+export const fetchSomeData = async (address, setter)=>{
+    const {data} = await $host.get('api/'+address)
+    return setter(data);
+}
+
+export const fetchSomeDataConfig = async (address, setter)=>{
+    const {data} = await $authHost.get('api/'+address)
+    setter(data);
+}
+
+export const sendMessage = async(description, dialogId) => {
+  const {data} = await $authHost.post('api/messages/'+dialogId, {description})
+    return data
+}

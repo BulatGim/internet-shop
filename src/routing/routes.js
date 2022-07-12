@@ -4,9 +4,21 @@ import BasketPage from "../pages/BasketPage/BasketPage"
 import DevicePage from "../pages/DevicePage/DevicePage"
 import Main from "../pages/Main/Main"
 import PersonalAccount from "../pages/PersonalAccount/PersonalAccount";
-import { ADMIN_ROUTE, BASKET_ROUTE, DEVICE_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, LK_ROUTE, CONTACT_ROUTE, CATALOGUE_ROUTE} from "../utils/consts"
+import {
+    ADMIN_ROUTE,
+    BASKET_ROUTE,
+    DEVICE_ROUTE,
+    LOGIN_ROUTE,
+    REGISTRATION_ROUTE,
+    SHOP_ROUTE,
+    LK_ROUTE,
+    CONTACT_ROUTE,
+    CATALOGUE_ROUTE,
+    DIALOG_ROUTE
+} from "../utils/consts"
 import Contacts from "../pages/Contacts/Contacts";
 import CataloguePage from "../pages/cataloguePage/cataloguePage";
+import DialogPage from "../pages/DialogPage/DialogPage";
 
 export const authRoutes = [
     {
@@ -20,6 +32,10 @@ export const authRoutes = [
     {
         path: LK_ROUTE,
         Element: <PersonalAccount/>
+    },
+    {
+        path: DIALOG_ROUTE + '/:id',
+        Element: <DialogPage />
     }
 ]
 
