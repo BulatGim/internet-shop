@@ -1,8 +1,11 @@
-import {FC, useState, useCallback, ChangeEvent, KeyboardEvent, useEffect, MouseEvent} from 'react';
+import {FC, useState, useCallback, ChangeEvent, KeyboardEvent, useEffect, MouseEvent, useContext} from 'react';
 import FormInput from "../../atoms/formInput/formInput";
 import {IError} from "../../types/types";
 import "./newReview.scss"
 import {sendNewReview} from "../../http/userAPI";
+import {Simulate} from "react-dom/test-utils";
+import {Context} from "../../index";
+import {observer} from "mobx-react-lite";
 
 interface IValues {
     rating: number | string;
@@ -12,18 +15,20 @@ interface IValues {
 }
 
 interface INewReviewProps {
-    name: string;
-    id: number;
+    name?: string;
+    id?: number;
     closeSetter: ()=> void;
 }
 
-const NewReview:FC<INewReviewProps> = ({name, id, closeSetter}) => {
+const NewReview:FC<INewReviewProps> = observer(({name, id, closeSetter}) => {
     const [userError, setUserError] = useState<IError[]>([])
 
     const [values, setValues] = useState<IValues>({rating: "", advantages: "", disadvantages: "", comment: ""})
 
     const [, updateState] = useState<any>();
     const forceUpdate = useCallback(() => updateState({}), []);
+
+    let context = useContext<any>(Context)
 
     function handleChange(e: ChangeEvent<HTMLTextAreaElement>|ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.target;
@@ -102,8 +107,7 @@ const NewReview:FC<INewReviewProps> = ({name, id, closeSetter}) => {
         allValidations();
         if (userError.length<1){
             let data = await sendNewReview(values.rating, id, values.advantages, values.disadvantages, values.comment )
-            console.log(data)
-            console.log("Great, success!")
+            context.service.setModal(true,"success", "Новый отзыв успешно доставлен!")
             closeSetter();
         }
         else{
@@ -123,6 +127,6 @@ const NewReview:FC<INewReviewProps> = ({name, id, closeSetter}) => {
             <button className="newReview-container__sendBtn" onClick={send}><h3>Отправить</h3></button>
         </>
     );
-};
+});
 
 export default NewReview;

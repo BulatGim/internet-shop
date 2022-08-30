@@ -1,7 +1,7 @@
 import "./deviceFromDeviceBlock.scss";
 import compareImg from "./imgs/compare.svg";
 import favouriteSvg from "./imgs/favourites.svg"
-import {FC, FunctionComponent, useContext} from "react";
+import {FC, useContext} from "react";
 import {IDeviceCard} from "../../types/types";
 import {useNavigate} from "react-router-dom";
 import {addToBasketAndInform} from "../../http/userAPI";

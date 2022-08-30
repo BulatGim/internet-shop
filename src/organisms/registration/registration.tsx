@@ -6,17 +6,9 @@ import {Context} from "../../index";
 import {useNavigate} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import "./registration.scss"
+import {IFormValues} from "../../types/types"
 
-interface IFormValues {
-    name?: string;
-    surname?: string;
-    patronymic?: string;
-    email?: string;
-    birthday?: string;
-    phone?: string;
-    password?: string;
-    repeatPassword?: string;
-}
+
 interface IUserError {
     formInput:string;
     message:string;
@@ -57,8 +49,6 @@ const Registration:FC<IRegistrationProps> = observer(({valuesProps}) => {
             [inputName]: value
         })
     }
-
-
     function hideUserError(formInput:string) {
 
         for (let i = 0; i < userError.length; i++){

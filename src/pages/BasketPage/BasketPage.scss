@@ -14,5 +14,12 @@
       cursor: pointer;
     }
   }
+  .content{
+
+    &__noContent{
+      margin: auto;
+    }
+
+  }
 
 }

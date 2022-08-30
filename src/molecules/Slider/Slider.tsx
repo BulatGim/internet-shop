@@ -1,15 +1,20 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, TouchEvent, MouseEvent, FC} from 'react';
 import "./Slider.scss";
 import arrow from './img/arrow.svg'
-function Slider(props){
+
+interface ISliderProps {
+    slides: [string]
+}
+
+const Slider: FC<ISliderProps> = ({ slides})=>{
   let img = [];
-  for (let i = 0; i< props.slides.length; i++){
-      img.push(<img className="sliderImg" key={props.slides[i]} src={props.slides[i]}/>)
+  for (let i = 0; i< slides.length; i++){
+      img.push(<img className="sliderImg" key={slides[i]} src={slides[i]}/>)
   }
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isMouseDown, setIsMouseDown] = useState(false);
-  const [x3, setX3] = useState(null);
-  const [y3, setY3] = useState(null);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
+  const [x3, setX3] = useState<number>(0);
+  const [y3, setY3] = useState<number>(0);
   function doNextSlide(){
     setActiveIndex((current) => {
         // Вычисляем индекс следующего слайда, который должен вывестись
@@ -46,14 +51,14 @@ const prevImgIndex = activeIndex ? activeIndex - 1 : img.length - 1
 // Вычисляем индекс следующего слайда
 const nextImgIndex = activeIndex === img.length - 1 ? 0 : activeIndex + 1
 //инициализируем переменные для начала ведения отсчета для перелистывания
-let x1 = null;
-let y1 = null;
+let x1:number = 0;
+let y1:number = 0;
 //функция записывающая начало свайпа по координатам x и y
-function handleTouchStart(e){
+function handleTouchStart(e:TouchEvent<HTMLDivElement>){
   x1 = e.touches[0].clientX;
   y1 = e.touches[0].clientY;
 }
-function handleTouchMove(e){
+function handleTouchMove(e:TouchEvent<HTMLDivElement>){
   if(!x1 || !y1){
     // если не существует начала свайпа, выходим из функци
     return false;
@@ -63,14 +68,14 @@ function handleTouchMove(e){
   let y2 = e.touches[0].clientY;
   let xDifference = x2-x1;
   let yDifference = y2-y1
-  calculateCoordinates(xDifference, yDifference)
+  return calculateCoordinates(xDifference, yDifference)
 }
-function handleMouseDown(e){
+function handleMouseDown(e:MouseEvent<HTMLDivElement>){
   setIsMouseDown(true);
   setX3(e.pageX);
   setY3(e.pageY);
 }
-function handleMouseMove(e){
+function handleMouseMove(e:MouseEvent<HTMLDivElement>){
   if(isMouseDown == true){
     let x4 = e.pageX;
     let y4 = e.pageY;
@@ -79,16 +84,16 @@ function handleMouseMove(e){
       setX3(x4)
       let xDifference = x4-x3;
       let yDifference = y4-y3;
-      calculateCoordinates(xDifference, yDifference);
+      return calculateCoordinates(xDifference, yDifference);
     }else{
       return false;
     }
   }
 }
-function handleMouseUp(e){
+function handleMouseUp(e:MouseEvent){
     setIsMouseDown(false);
 }
-function calculateCoordinates(xDiff, yDiff){
+function calculateCoordinates(xDiff:number, yDiff:number){
   // записываем разницу в координатах
   if (Math.abs(xDiff) > Math.abs(yDiff)) {
     //ветка выполняется, когда свайп идет влево или вправо
@@ -99,7 +104,7 @@ function calculateCoordinates(xDiff, yDiff){
       }
     }
   }
-  function switchToGivenSlide(index){
+  function switchToGivenSlide(index:number){
     setActiveIndex(index)
   }
   return(

@@ -35,11 +35,6 @@ export const addToBasket = async (deviceId)=>{
     return data;
 }
 
-export const getBasketDevices = async ()=>{
-    const basket = await $authHost.get('api/basket')
-    return basket.data.array;
-}
-
 export const getTypes = async ()=>{
     const types = await $host.get('api/type')
     return types.data;
@@ -55,7 +50,6 @@ export const getDevices = async ()=>{
     return devices.data;
 }
 export const newOrder = async (devices)=>{
-    console.log(devices)
     const order = await $authHost.post('api/orders', devices)
     return order.data;
 }
@@ -64,8 +58,7 @@ export async function addToBasketAndInform(id, context) {
     try {
         const data = await addToBasket(id)
         if (data){
-            let basketDevices = await getBasketDevices()
-            context.basket.setUserBasket(basketDevices)
+            await context.basket.setBasketDevices();
             context.service.setModal(true,"success", "Товар успешно добавлен в корзину")
         }
     }catch (e) {
@@ -90,5 +83,15 @@ export const fetchSomeDataConfig = async (address, setter)=>{
 
 export const sendMessage = async(description, dialogId) => {
   const {data} = await $authHost.post('api/messages/'+dialogId, {description})
+    return data
+}
+
+export const sendCallBack = async (phone) => {
+    const {data} = await $host.post('api/mail/phone', {phone})
+    return data
+}
+
+export const sendContacts = async (name, email, comment) => {
+    const {data} = await $host.post('api/mail/contacts', {name, email, comment})
     return data
 }

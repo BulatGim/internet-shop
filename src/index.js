@@ -7,6 +7,7 @@ import UserStore from './store/UserState';
 import DeviceStore from "./store/DeviceStore";
 import BasketStore from "./store/BasketStore";
 import ServiceStore from "./store/serviceStore";
+import PreviousOrdersStore from "./store/previousOrdersStore";
 
 
 export const Context = createContext(null)
@@ -18,7 +19,8 @@ root.render(
       user: new UserStore(),
         devices: new DeviceStore(),
         basket: new BasketStore(),
-        service: new ServiceStore()
+        service: new ServiceStore(),
+        prevOrders: new PreviousOrdersStore()
     }}>
       <App />
     </Context.Provider>

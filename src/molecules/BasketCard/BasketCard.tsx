@@ -6,7 +6,6 @@ import toBasket from "./imgs/toBasket.svg"
 import {FC, useEffect, useState, Dispatch, SetStateAction, useContext} from "react";
 import {IBasket, IDeviceCard} from "../../types/types";
 import axios from "axios";
-import {getBasketDevices} from "../../http/userAPI";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 
@@ -22,8 +21,7 @@ const BasketCard: FC<IBasketCardProps> = observer((props)=> {
             process.env.REACT_APP_API_URL+'basket/'+deviceId,
             {headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}}
         )
-        let basketDevices = await getBasketDevices()
-        context.basket.setUserBasket(basketDevices)
+        await context.basket.setBasketDevices()
     }
     return(
         <div className="BasketCard">
