@@ -1,17 +1,6 @@
 import {makeAutoObservable} from "mobx";
+import {IModal, IActiveFilter} from "../types/types";
 
-type filterItem = number[]
-
-interface IActiveFilter {
-    typeId: filterItem;
-    brandId: filterItem;
-}
-
-interface IModal {
-    isModalActive: boolean;
-    operation: string;
-    text: string;
-}
 
 class ServiceStore {
     private _overFlowHidden: boolean
@@ -27,7 +16,7 @@ class ServiceStore {
     setOverFlowHidden(bool: boolean){
         this._overFlowHidden = bool;
     }
-    setActiveFilter(filter: filterItem, filterName: string){
+    setActiveFilter(filter: number[], filterName: string){
         this._activeFilter = {
             ...this.activeFilter,
             [filterName]: [...filter]

@@ -3,7 +3,7 @@ import "./Slider.scss";
 import arrow from './img/arrow.svg'
 
 interface ISliderProps {
-    slides: [string]
+    slides: string[]
 }
 
 const Slider: FC<ISliderProps> = ({ slides})=>{
