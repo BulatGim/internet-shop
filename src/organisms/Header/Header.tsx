@@ -1,5 +1,5 @@
-import React, {useState, useContext, useEffect} from 'react';
-import "./Header.css"
+import {useState, useContext, useEffect, MouseEvent, SetStateAction, Dispatch} from 'react';
+import "./Header.scss"
 import {Link, NavLink} from "react-router-dom";
 import loupe from "./imgs/loupe.svg"
 import {observer} from "mobx-react-lite";
@@ -8,44 +8,26 @@ import axios from "axios";
 import {CATALOGUE_ROUTE} from "../../utils/consts";
 import ModalTemplate from "../../templates/modalTemplate/modalTemplate";
 import InfoBlock from "../../molecules/infoBlock/infoBlock";
+import {ITypes} from "../../types/types";
+import {fetchSomeData} from "../../http/userAPI";
 
 const Header = observer( (props)=>{
-    const context = useContext(Context)
-    const [isPanelActive, setIsPanelActive] = useState(false);
-    const [isCatalogActive, setIsCatalogActive] = useState(false);
-    const [types, setTypes] = useState([])
+    const context = useContext<any>(Context)
 
-    const [modalActive, setModalActive] = useState(false)
+    const [isPanelActive, setIsPanelActive] = useState<boolean>(false);
+    const [isCatalogActive, setIsCatalogActive] = useState<boolean>(false);
+    const [types, setTypes] = useState<ITypes[]>([])
 
     useEffect(()=>{
-        fetchData(setTypes, "type")
+        fetchSomeData( "type", setTypes)
     }, [])
 
     useEffect(()=>{
         context.service.setOverFlowHidden(isCatalogActive)
     }, [isCatalogActive])
 
-    const fetchData = async (setter, address) => {
-        const result = await axios(
-            process.env.REACT_APP_API_URL+address+'/'
-        );
-        setter(result.data)
-    };
-
-    function showHidePopup(e) {
-        if (e.target.getAttribute("data-show-panel")==="show"){
-            isPanelActive===true?setIsPanelActive(false):setIsPanelActive(true)
-            setIsCatalogActive(false)
-        }else if(e.target.getAttribute("data-show-catalog")==="show"){
-            setIsPanelActive(false);
-            isCatalogActive===true?setIsCatalogActive(false):setIsCatalogActive(true);
-        }else{
-            setIsPanelActive(false);
-            setIsCatalogActive(false)
-        }
-    }
     return(
-        <div className="header" onClick={(e)=>showHidePopup(e)}>
+        <div className="header" onClick={()=>{setIsPanelActive(false); setIsCatalogActive(false)}}>
             <div className="header__main">
                 <NavLink to={'/'} className="iShop">
                     <p className="iShop__title">BuG Corp.</p>
@@ -55,19 +37,22 @@ const Header = observer( (props)=>{
                 <div className="actionBlock">
                     <p className="actionsBlock__action">Проверить статус заказа</p>
                 </div>
-                <NavLink to={"/Contacts"} className="contacts" href="#"><p>Контакты</p></NavLink>
+                <NavLink to={"/Contacts"} className="contacts" ><p>Контакты</p></NavLink>
                 {context.user.isAuth?(
                     <div className="personalAccount">
-                        <p className="personalAccount__title" data-show-panel="show">Здравствуйте, {context.user._user?context.user.user.name:""}</p>
+                        <p className="personalAccount__title" onClick={(e)=> {
+                            setIsPanelActive(prevState => !prevState);
+                            e.stopPropagation()
+                        }}>Здравствуйте, {context?.user?.user.name}</p>
                         {isPanelActive?(
                             <div className="panel">
-                                <NavLink to={"/lk"} className="panel__item panel__item_lk" href="#"><p>Личный кабинет</p> </NavLink>
-                                <NavLink to={"/basket"} className="panel__item panel__item__basket" href="#"><p>Корзина</p> </NavLink>
+                                <NavLink to={"/lk"} className="panel__item panel__item_lk"><p>Личный кабинет</p> </NavLink>
+                                <NavLink to={"/basket"} className="panel__item panel__item__basket" ><p>Корзина</p> </NavLink>
                                 <NavLink to={"/login"} onClick={()=> {
                                     localStorage.setItem("token", "")
                                     context.user.setIsAuth(false);
                                     context.user.setUser("")
-                                }} className="panel__item panel__item__logOut" href="#"><p>Выйти</p> </NavLink>
+                                }} className="panel__item panel__item__logOut"><p>Выйти</p> </NavLink>
                             </div>
                         ):("")}
                     </div>
@@ -79,9 +64,12 @@ const Header = observer( (props)=>{
 
             </div>
             <div className="header__fixed">
-                <div className="catalog" data-show-catalog="show">
-                    <div className="catalog__img" data-show-catalog="show"></div>
-                    <p className="catalog__description" data-show-catalog="show">Каталог товаров</p>
+                <div className="catalog" onClick={(e)=> {
+                    setIsCatalogActive(prevState => !prevState);
+                    e.stopPropagation()
+                }}>
+                    <div className="catalog__img" ></div>
+                    <p className="catalog__description" >Каталог товаров</p>
                 </div>
                 <form className="search">
                     <input placeholder="Введите название товара или его артикул" type="text" className="search__input"/>
@@ -97,14 +85,14 @@ const Header = observer( (props)=>{
                 </div>
             </div>
             {isCatalogActive?(
-                <div className="showedCatalog">
+                <div className="showedCatalog" >
                     {types.map(item=>
-                        <Link className="showedCatalog__link" to={CATALOGUE_ROUTE+"/"+item.id}><h3 className="showedCatalog__item">{item.name}</h3></Link>
+                        <Link className="showedCatalog__link" key={item.id} to={CATALOGUE_ROUTE+"/"+item.id}><h3 className="showedCatalog__item">{item.name}</h3></Link>
                     )}
                 </div>
             ):("")}
             {context.service.modal.isModalActive ? (
-                <ModalTemplate closeSetter={()=>context.service.setModal(false, null, null)}>
+                <ModalTemplate closeSetter={()=>context.service.setModal(false, null, null)} >
                     <InfoBlock operation={context.service.modal.operation} text={context.service.modal.text}/>
                 </ModalTemplate>
             ):("")}

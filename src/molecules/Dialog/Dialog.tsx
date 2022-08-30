@@ -1,12 +1,17 @@
 import "./Dialog.scss"
-import {useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import anonymousPhoto from "./imgs/addresseeAvatar.svg"
 import {Link} from "react-router-dom";
 import {DIALOG_ROUTE} from "../../utils/consts";
+import {IDialog} from "../../types/types";
 
-export default function Dialog (props) {
-    const [date, setDate] = useState()
-    function determineMonth(month){
+interface IDialogProps {
+    dialog: IDialog;
+}
+
+const Dialog:FC<IDialogProps> = ({dialog})=> {
+    const [date, setDate] = useState< string[] | []>([])
+    function determineMonth(month:string):string{
         if (month === "01"){
             return "Январь"
         }else if(month==="02"){
@@ -32,42 +37,41 @@ export default function Dialog (props) {
         }else if(month==="12"){
             return "Декабрь"
         }else{
-            return alert("Ошибка")
+            return "Ошибка"
         }
     }
-    const determineDates = (date)=>{
-        if (!date){
-            return
-        }
-        let arr = [];
+    const determineDates = (date:string)=>{
+        let arr:string[]|[] = [];
         const day = date.split('T')[0].split('-')[2];
-        arr.push(day)
+        arr = [...arr, day]
         const month = date.split('T')[0].split('-')[1];
-        arr.push(determineMonth(month));
+        arr = [...arr, determineMonth(month)];
         const year = date.split('T')[0].split("-")[0];
-        arr.push(year)
+        arr = [...arr, year]
         setDate(arr)
     }
     useEffect(()=>{
-        determineDates(props.dialog.createdAt)
+        determineDates(dialog.createdAt)
     }, [])
     return(
         <div className="dialog" >
-            <Link className="dialog-link" to={DIALOG_ROUTE+"/"+props.dialog.id}>
-                <img src={props.dialog.addresseePhoto?props.dialog.addresseePhoto:anonymousPhoto} alt="" className="dialog__addresseePreview"/>
+            <Link className="dialog-link" to={DIALOG_ROUTE+"/"+dialog.id}>
+                <img src={dialog.addresseePhoto?dialog.addresseePhoto:anonymousPhoto} alt="" className="dialog__addresseePreview"/>
                 <div className="dialog__main">
                     <div className="upperBlock">
-                        <h3 className="upperBlock__title">Тема: {props.dialog.title}</h3>
-                        {props.dialog.addressee?(
-                            <p className="upperBlock__addresseeName">{props.dialog.addressee}</p>
+                        <h3 className="upperBlock__title">Тема: {dialog.title}</h3>
+                        {dialog.addressee?(
+                            <p className="upperBlock__addresseeName">{dialog.addressee}</p>
                         ):(<p className="upperBlock__addresseeName">Ищем специалиста....</p>)}
                     </div>
                     <div className="lowerBlock">
-                        <span className="lowerBlock__lastMessage">{props.dialog.lastMessage}</span>
-                        <span className="lowerBlock__date">{date? (<span>{date[0]} {date[1]} {date[2]}</span>):"" }</span>
+                        <span className="lowerBlock__lastMessage">{dialog.lastMessage}</span>
+                        <span className="lowerBlock__date">{date.length>0? (<span>{date[0]} {date[1]} {date[2]}</span>):"" }</span>
                     </div>
                 </div>
             </Link>
         </div>
     )
 }
+
+export default Dialog;

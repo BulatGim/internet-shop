@@ -1,8 +1,9 @@
 import {FC, useContext} from "react";
 import "./orderMenu.scss"
 import {Context} from "../../index";
-import {newOrder} from "../../http/userAPI";
+import { newOrder} from "../../http/userAPI";
 import {IDeviceCard} from "../../types/types";
+import {observer} from "mobx-react-lite";
 
 interface IOrderMenuProps {
     text: string;
@@ -13,13 +14,14 @@ interface IOrderMenuProps {
     devices?: IDeviceCard[] | any
 }
 
-const OrderMenu:FC<IOrderMenuProps> = (props)=>{
+const OrderMenu:FC<IOrderMenuProps> = observer((props)=>{
     let context = useContext<any>(Context)
     const makeNewOrder = async()=>{
         try {
-            const data = await newOrder(props.devices)
+            await newOrder(props.devices)
+            await context.basket.setBasketDevices()
         }catch (e) {
-            context.service.setModal(true,"error", e.response.data.message?e.response.data.message:e.response.data.message)
+            context.service.setModal(true,"error", e.response.data.message?e.response.data.message:e.message)
         }
     }
     return(
@@ -41,5 +43,5 @@ const OrderMenu:FC<IOrderMenuProps> = (props)=>{
             </div>
         </div>
     )
-}
+})
 export default OrderMenu;

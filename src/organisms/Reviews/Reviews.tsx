@@ -14,9 +14,9 @@ import ModalTemplate from "../../templates/modalTemplate/modalTemplate";
 
 
 interface IReviewsProps {
-    reviews: Array<IReview>;
-    generalRate?: string;
-    device: {
+    reviews?: Array<IReview>;
+    generalRate?: string | number;
+    device?: {
         id: number;
         name: string;
         img: string;
@@ -71,7 +71,7 @@ const Reviews: FC<IReviewsProps> = observer(({reviews, generalRate, device})=>{
             </div>
             {isNewReviewActive?(
                 <ModalTemplate closeSetter={()=>setIsNewReviewActive(false)} >
-                    <NewReview id={device.id} name={device.name} closeSetter={()=>setIsNewReviewActive(false)}/>
+                    <NewReview id={device?.id} name={device?.name} closeSetter={()=>setIsNewReviewActive(false)}/>
                 </ModalTemplate>
             ):("")}
         </div>

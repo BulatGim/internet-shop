@@ -1,5 +1,5 @@
 import AdminPage from "../pages/AdminPage/AdminPage"
-import Auth from "../pages/Auth/Auth,"
+import Auth from "../pages/Auth/Auth"
 import BasketPage from "../pages/BasketPage/BasketPage"
 import DevicePage from "../pages/DevicePage/DevicePage"
 import Main from "../pages/Main/Main"

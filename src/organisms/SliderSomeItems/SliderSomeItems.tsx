@@ -7,14 +7,7 @@ interface ISliderProps {
 }
 
 const SliderSomeItems: FC<ISliderProps> = ({arrayItems})=>{
-    let img = arrayItems/*[
-        <img className="slider__imgNew" key={props.slides[0]} src={props.slides[0]} />,
-        <img className="slider__imgNew" key={props.slides[1]} src={props.slides[1]} />,
-        <img className="slider__imgNew" key={props.slides[2]} src={props.slides[2]} />,
-        <img className="slider__imgNew" key={props.slides[3]} src={props.slides[3]} />,
-        <img className="slider__imgNew" key={props.slides[4]} src={props.slides[4]} />,
-        <img className="slider__imgNew" key={props.slides[5]} src={props.slides[5]} />,
-    ]*/
+    let img = arrayItems
     // Хук Effect
     useEffect(() => {
         // Запускаем интервал
@@ -113,6 +106,9 @@ const SliderSomeItems: FC<ISliderProps> = ({arrayItems})=>{
     function switchToGivenSlide(index:number){
         setActiveIndex(index)
     }
+    useEffect(()=>{
+        console.log(nextImgDouble)
+    }, [nextImgDouble])
     return(
         <div className="SliderSomeItems" onTouchStart={(e)=>handleTouchStart(e)} onTouchMove={(e)=>handleTouchMove(e)} onMouseDown={(e)=>handleMouseDown(e)} onMouseMove={(e)=>handleMouseMove(e)} onMouseUp={(e)=>handleMouseUp(e)} onMouseLeave={(e)=>handleMouseUp(e)}>
             {img.length>3?(

@@ -35,6 +35,9 @@
       cursor: pointer;
       padding: 0.75rem 0.5rem;
       margin-top: 1.125rem;
+      display: block;
+      text-decoration: none;
+      color: black;
     }
     &__item:first-child{
       margin-top: 0;
@@ -72,6 +75,9 @@
         padding: 0.5rem 0.75rem;
         margin-top: 1rem;
         display: block;
+        cursor: pointer;
+        background: linear-gradient(70deg, blue, pink);
+        color: white;
       }
     }
     .socialNetworks{
@@ -79,10 +85,13 @@
       flex-direction: column;
       align-items: end;
       margin-top: 1rem;
+      &__link{
+        display: block;
+        text-decoration: none;
+        color: black;
+      }
       &__item{
-        width: 12rem;
         margin-top: 0.5rem;
-        cursor: pointer;
         &_instagram{
 
         }

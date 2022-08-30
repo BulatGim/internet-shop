@@ -1,5 +1,5 @@
 import "./PersonalAccount.scss"
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import Review from "../../molecules/review/review";
 import PrevOrder from "../../organisms/PrevOrder/PrevOrder";
 import Dialog from "../../molecules/Dialog/Dialog";
@@ -8,14 +8,16 @@ import Registration from "../../organisms/registration/registration";
 import SliderSomeItems from "../../organisms/SliderSomeItems/SliderSomeItems";
 import ModalTemplate from "../../templates/modalTemplate/modalTemplate";
 import NewDialogForm from "../../organisms/newDialogForm/newDialogForm";
+import {Context} from "../../index";
+import {observer} from "mobx-react-lite";
 
-export default function PersonalAccount() {
+const PersonalAccount=observer(()=> {
     const [isNewDialogActive, setIsNewDialogActive] = useState(false)
-    const [activeTab, setActiveTab] = useState("personalData")
     const [user, setUser] = useState({})
     const [reviews, setReviews] = useState([])
-    const [prevOrders, setPrevOrders] = useState([])
     const [dialogs, setDialogs] = useState([])
+
+    const {prevOrders} = useContext(Context);
 
     const fetchData = async (setter, address) =>{
         const result = await axios(
@@ -34,7 +36,7 @@ export default function PersonalAccount() {
     };
     useEffect(  () => {
         /*fetchData(setPromotions, "promotions");*/
-        fetchDataConfig(setPrevOrders, "/orders", {
+        fetchDataConfig(prevOrders.setPreviousOrders, "/orders", {
             headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
         })
         fetchDataConfig(setUser, "user/getOne", {
@@ -76,9 +78,9 @@ export default function PersonalAccount() {
             </div>
             <div className="PersonalAccount__item PersonalAccount__item_orders orders" data-showing="orders">
                 <span className="orders__title">Ваши заказы</span>
-                {prevOrders?(
+                {prevOrders.PreviousOrders?(
                     <div>
-                        {prevOrders.map((item,index)=>
+                        {prevOrders.PreviousOrders?.map((item,index)=>
                             <PrevOrder key={index} order={item}/>
                         )}
                     </div>
@@ -110,4 +112,6 @@ export default function PersonalAccount() {
             </div>
         </div>
     )
-}
+})
+
+export default PersonalAccount;

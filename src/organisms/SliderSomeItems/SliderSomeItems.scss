@@ -40,26 +40,30 @@
     }
   }
   &__img-prev {
-    /*margin-left: 6%;*/
-    transform: translateX(-70%);
+    margin-left: 6%;
+    transform: translateX(-15%);
     /*animation: nextSlide 0.5s ease-in-out;*/
   }
   &__img-prevDouble{
-    /*position: absolute;*/
+    position: absolute;
     transform: translateX(-120%);
   }
 
   &__img-current{
+    margin-left: 15%;
+    transform: translateX(-20%);
     /*animation: nextSlide 0.5s ease-in-out;*/
   }
-
   &__img-next {
-    /*margin-right: 6%;*/
-    transform: translateX(70%);
+    margin-left: 6%;
+    transform: translateX(15%);
     /*animation: nextSlide 0.5s ease-in-out;*/
   }
   &__img-nextDouble{
-    /*position: absolute;*/
+    z-index: -10;
+    /*display: none;*/
+    opacity: 0;
+    position: absolute;
     transform: translateX(120%);
   }
   &-crumbs{

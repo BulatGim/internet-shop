@@ -6,7 +6,7 @@ import Footer from "./organisms/Footer/Footer";
 import {useContext, useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
 import {Context} from "./index";
-import {check, getBasketDevices, getTypes, getBrands, getDevices} from "./http/userAPI";
+import {check, getTypes, getBrands, getDevices} from "./http/userAPI";
 
 const App = observer(()=> {
     const {user, basket, service, devices} = useContext(Context);
@@ -15,8 +15,8 @@ const App = observer(()=> {
         check().then(data => {
             user.setUser(data);
             user.setIsAuth(true)
-        }).then(getBasketDevices).then(data=>{
-            basket.setUserBasket(data)
+        }).then(()=>{
+            basket.setBasketDevices()
         }).then(getTypes).then(data=>{
             devices.setTypes(data)
         }).then(getBrands).then(data=>{
