@@ -1,4 +1,5 @@
 
+
 export interface IReview {
     id: number;
     rate: string;
@@ -101,4 +102,70 @@ export interface ITypes {
     createdAt: string;
     updatedAt:string;
     name:string;
+}
+
+
+export interface IUser {
+    email:string;
+    id:number;
+    name:string;
+    role:string;
+    exp:number;
+    iat:number;
+}
+
+export interface IModal {
+    isModalActive: boolean;
+    operation: string;
+    text: string;
+}
+
+export interface IActiveFilter {
+    typeId: number[];
+    brandId: number[];
+}
+
+
+export interface IContext {
+    user: IUserStore;
+    devices: IDeviceStore;
+    basket: IBasketStore;
+    service: IServiceStore;
+    prevOrders: IPrevOrdersStore
+}
+
+export interface IUserStore {
+    setIsAuth: void;
+    setUser:void;
+    isAuth:boolean;
+    user: IUser;
+}
+
+export interface IDeviceStore {
+    setTypes: void;
+    setBrands: void;
+    setDevices:void;
+    types: ITypes;
+    brands: ITypes;
+    devices: IDeviceCard;
+}
+
+export interface IBasketStore {
+    setUserBasket:void;
+    setBasketDevices: void;
+    userBasket: IBasket | object;
+}
+
+export interface IServiceStore {
+    setOverFlowHidden: void;
+    setActiveFilter: void;
+    setModal: void;
+    modal: IModal;
+    overFlowHidden: boolean;
+    activeFilter: IActiveFilter;
+}
+
+export interface IPrevOrdersStore {
+    setPreviousOrders: void;
+    PreviousOrders: Array<IPrevOrder[]>;
 }

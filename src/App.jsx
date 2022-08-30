@@ -13,6 +13,7 @@ const App = observer(()=> {
     const [loading, setLoading] = useState(true);
     useEffect(()=>{
         check().then(data => {
+        console.log(data)
             user.setUser(data);
             user.setIsAuth(true)
         }).then(()=>{
@@ -28,6 +29,9 @@ const App = observer(()=> {
     useEffect(() => {
         service.overFlowHidden ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'visible'
     }, [service.overFlowHidden])
+
+
+
   return (
       <div className="App">
           <BrowserRouter>

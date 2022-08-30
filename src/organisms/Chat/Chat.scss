@@ -1,0 +1,11 @@
+.chat{
+  margin-top: 1.5rem;
+  &__new{
+    padding: 0.5rem 1rem;
+    background: linear-gradient(70deg, blue, pink);
+    border: none;
+    border-radius: 10px;
+    margin-top: 1rem;
+    color: whitesmoke;
+  }
+}

@@ -1,4 +1,4 @@
-import {useState, useEffect, FC, useContext} from "react";
+import {useState, useEffect, FC} from "react";
 import slide0 from './imgs/slide.png'
 import slide1 from "./imgs/slide1.png"
 import slide2 from "./imgs/slide2.png"
@@ -6,10 +6,10 @@ import "./Main.scss";
 import Slider from "../../molecules/Slider/Slider"
 import DeviceBlock from "../../organisms/deviceBlock/deviceBlock";
 import Reviews from "../../organisms/Reviews/Reviews";
-import axios from "axios";
+import {fetchSomeDataConfig, fetchSomeData} from "../../http/userAPI";
 
 
-const Main = () => {
+const Main:FC = () => {
     /*const arr = [2, 27, 14, 52, 31, 96, 73, 47, 22, 6];
 
     function quickSort(list) {
@@ -31,25 +31,16 @@ const Main = () => {
     }*/
 
 
-    const slides = [slide0, slide1, slide2]
+    const slides:string[] = [slide0, slide1, slide2]
 
     const [reviews, setReviews] = useState()
-    const [promotions, setPromotions] = useState()
+    const [promotions, setPromotions] = useState([])
     const [watched, setWatched] = useState([])
 
-    const fetchData = async (setter, address, config) => {
-            const result = await axios(
-                process.env.REACT_APP_API_URL+address+'/',
-                config
-            );
-            setter(result.data)
-    };
     useEffect(  () => {
-        fetchData(setReviews, "rating");
-        fetchData(setPromotions, "promotions");
-        fetchData(setWatched, "watched", {
-            headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
-        });
+        fetchSomeData( "rating", setReviews);
+        fetchSomeData( "promotions", setPromotions);
+        fetchSomeDataConfig( "watched", setWatched);
 
     }, [])
     return (
